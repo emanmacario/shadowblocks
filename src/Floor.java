@@ -14,11 +14,13 @@
 
 public class Floor extends Sprite {
 	
+	public static final String FLOOR = "res/floor.png";
+	
 	/** 
 	 * Creates the Floor object.
 	 */
-	public Floor(String imagePath, float x, float y) {
-		super(imagePath, x, y);
+	public Floor(float x, float y) {
+		super(FLOOR, x, y);
 	}
 
 }

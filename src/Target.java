@@ -14,11 +14,13 @@
 
 public class Target extends Sprite {
 	
+	public static final String TARGET = "res/target.png";
+	
 	/** 
 	 * Creates the Target object.
 	 */
-	public Target(String imagePath, float x, float y) {
-		super(imagePath, x, y);
+	public Target(float x, float y) {
+		super(TARGET, x, y);
 	}
 
 }

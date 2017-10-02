@@ -12,10 +12,12 @@
 
 public class Wall extends Sprite {
 	
+	public static final String WALL = "res/wall.png";
+	
 	/** 
 	 * Creates the Wall object.
 	 */
-	public Wall(String imagePath, float x, float y) {
-		super(imagePath, x, y);
+	public Wall(float x, float y) {
+		super(WALL, x, y);
 	}
 }

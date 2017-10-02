@@ -20,7 +20,13 @@ public abstract class Sprite {
 	/** 
 	 * Sprite attributes. 
 	 */
-	private Image sprite;
+	public static final int DIR_NONE = 0;
+	public static final int DIR_LEFT = 1;
+	public static final int DIR_RIGHT = 2;
+	public static final int DIR_UP = 3;
+	public static final int DIR_DOWN = 4;
+	
+	private Image image;
 	private float x;
 	private float y;
 		
@@ -34,7 +40,7 @@ public abstract class Sprite {
 	 */
 	public Sprite(String imagePath, float x, float y) {
 		try {
-			this.sprite = new Image(imagePath);
+			this.image = new Image(imagePath);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -78,32 +84,6 @@ public abstract class Sprite {
 		
 	
 	/** 
-	 * Offsets the sprite's x pixel coordinate, to ensure
-	 * that the sprite is rendered in the right (centred) 
-	 * position on the game screen.
-	 */
-	private float toWorldXCoordinate(float x) {
-		
-		return (float)(x + (App.SCREEN_WIDTH 
-				- (1.0* App.TILE_SIZE * World.mapWidth)) / 2);
-				
-	}
-	
-	
-	/** 
-	 * Offsets the sprite's y pixel coordinate, to ensure
-	 * that the sprite is rendered in the right (centred)
-	 * position on the game screen.
-	 */
-	private float toWorldYCoordinate(float y) {
-		
-		return (float)(y + (App.SCREEN_HEIGHT 
-				- (1.0* App.TILE_SIZE * World.mapWidth)) / 2);
-				
-	}
-	
-	
-	/** 
 	 * Update the game state for a frame.
 	 * 
      * @param input  The Slick input object, used for getting keyboard input.
@@ -120,7 +100,6 @@ public abstract class Sprite {
 	 * @return void
 	 */
 	public void render(Graphics g) throws SlickException {
-		sprite.drawCentered(toWorldXCoordinate(this.x), 
-								toWorldYCoordinate(this.y));
+		image.drawCentered(x, y);
 	}
 }
