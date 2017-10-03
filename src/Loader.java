@@ -22,7 +22,6 @@ public class Loader {
 	private static int offsetY;
 	
 	
-	
 	public static int getTileX(float x) {
 		return (int)(x - offsetX)/App.TILE_SIZE;
 	}

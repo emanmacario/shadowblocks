@@ -36,6 +36,11 @@ public class World {
 	}
 	
 	
+	public void restartLevel() {
+		this.sprites = Loader.loadSprites("res/levels/" + currentLevel + ".lvl");
+	}
+	
+	
 	/** Checks if a Movable object is moving onto
 	 * a tile that is blocked.
 	 * @param x 	   New x-coordinate of object.
@@ -142,8 +147,14 @@ public class World {
      */
 	public void update(Input input, int delta) {	
 		
+		/* Exit game if 'ESC' key is pressed. */
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
 			System.exit(0);
+		}
+		
+		/* Restart level if 'R' key is pressed. */
+		if (input.isKeyDown(Input.KEY_R)) {
+			restartLevel();
 		}
 		
 		int direction = Sprite.DIR_NONE;
@@ -190,6 +201,8 @@ public class World {
 			}
 		}
 	}
+	
+	
 	
 	/** 
 	 * Render the entire map, so it reflects the current game state.
