@@ -142,11 +142,11 @@ public class World {
      */
 	public void update(Input input, int delta) {	
 		
-		int direction = Sprite.DIR_NONE;
-		
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
 			System.exit(0);
 		}
+		
+		int direction = Sprite.DIR_NONE;
 		
 		if (input.isKeyPressed(Input.KEY_W)) {
 			direction = Sprite.DIR_UP;
@@ -160,14 +160,32 @@ public class World {
 		
 		
 		for (Sprite sprite : sprites) {
+			
+			float spriteX = getTestX(sprite.getX(), direction);
+			float spriteY = getTestY(sprite.getY(), direction);
+			
+			
+			float blockX = getTestX(spriteX, direction);
+			float blockY = getTestY(spriteY, direction);
+			
 			if (sprite != null && sprite instanceof Player) {
 				
-				float spriteX = getTestX(sprite.getX(), direction);
-				float spriteY = getTestY(sprite.getY(), direction);
-				
 				if (!isBlocked(spriteX, spriteY)) {
-					Player player = (Player)sprite;
-					player.moveToDestination(direction);
+					
+					((Movable)sprite).moveToDestination(direction);
+					
+				} else {
+					
+					Sprite object = getSpriteOfType("Block", spriteX, spriteY);
+					
+					if (object == null) {
+						return;
+					}
+					
+					if (!isBlocked(blockX, blockY)) {
+						((Movable)sprite).moveToDestination(direction);
+						((Movable)object).moveToDestination(direction);
+					}
 				}
 			}
 		}

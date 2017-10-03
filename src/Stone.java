@@ -12,7 +12,7 @@
  */
 
 
-public class Stone extends Sprite {
+public class Stone extends Movable {
 	
 	public static final String STONE = "res/stone.png";
 	
