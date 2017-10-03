@@ -21,5 +21,7 @@ public class Stone extends Sprite {
 	 */
 	public Stone(float x, float y) {
 		super(STONE, x, y);
+		this.addTag("Block");
+		this.addTag("Blocked");
 	}
 }

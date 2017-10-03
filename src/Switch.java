@@ -7,4 +7,9 @@ public class Switch extends Sprite {
 	public Switch(float x, float y) {
 		super(SWITCH, x, y);
 	}
+	
+	//@Override
+	//public void update(int delta) {
+		
+	//}
 }

@@ -22,10 +22,22 @@ public class Loader {
 	private static int offsetY;
 	
 	
-	public static boolean inBounds(int tileX, int tiley) {
-		return true;
+	
+	public static int getTileX(float x) {
+		return (int)(x - offsetX)/App.TILE_SIZE;
 	}
 	
+	public static int getTileY(float y) {
+		return (int)(y - offsetY)/App.TILE_SIZE;
+	}
+	
+	public static boolean inBounds(int tileX, int tileY) {
+		if (tileX < 0 || tileX >= worldWidth ||
+			tileY < 0 || tileY >= worldHeight) {
+			return false;
+		}
+		return true;
+	}
 	
 	/**
 	 * Create the appropriate sprite given a name and location.

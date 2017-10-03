@@ -9,11 +9,12 @@
  * behaviour.
  */
 
-
-import org.newdawn.slick.Input;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+
+import java.util.ArrayList;
 
 public abstract class Sprite {	
 	
@@ -29,6 +30,7 @@ public abstract class Sprite {
 	private Image image;
 	private float x;
 	private float y;
+	private ArrayList<String> tags;
 		
 	
 	/** 
@@ -46,26 +48,38 @@ public abstract class Sprite {
 		}
 		this.x = x;
 		this.y = y;
+		this.tags = new ArrayList<>();
 	}
 	
 	
-	/** 
+	public void addTag(String tag) {
+		this.tags.add(tag);
+	}
+	
+	
+	public void removeTag(String tag) {
+		this.tags.remove(tag);
+	}
+	
+	public boolean compareTag(String otherTag) {
+		for (String tag : tags) {
+			if (tag.equals(otherTag)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+
+	/**
 	 * Getters and setters for sprite's pixel coordinates. 
-	 * The setters ensure that a sprite's location is 
-	 * never set outside of the game screen.
 	 */
 	public float getX() {
 		return this.x;
 	}
 	
 	public void setX(float x) {
-		if (x < 0) {
-			this.x = 0;
-		} else if (x > App.SCREEN_WIDTH - App.TILE_SIZE) {
-			this.x = App.SCREEN_WIDTH - App.TILE_SIZE;
-		} else {
-			this.x = x;
-		}
+		this.x = x;
 	}
 	
 	public float getY() {
@@ -73,20 +87,12 @@ public abstract class Sprite {
 	}
 
 	public void setY(float y) {
-		if (y < 0) {
-			this.y = 0;
-		} else if (y > App.SCREEN_HEIGHT - App.TILE_SIZE) {
-			this.y = App.SCREEN_HEIGHT - App.TILE_SIZE;
-		} else {
-			this.y = y;
-		}
+		this.y = y;
 	}
-		
 	
 	/** 
 	 * Update the game state for a frame.
 	 * 
-     * @param input  The Slick input object, used for getting keyboard input.
      * @param delta  Time passed since last frame (milliseconds).
      * @return void
      */

@@ -8,12 +8,17 @@
  * movement of the player in the program.
  */
 
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Input;
 
 
-public class Player extends Sprite {
+public class Player extends Movable {
 	
 	public static final String PLAYER = "res/player.png";
+	
+	private int dir;
+	private int moveCount;
 	
 	/** 
 	 * Creates the Player object.
@@ -23,6 +28,8 @@ public class Player extends Sprite {
 	 */
 	public Player(float x, float y) {
 		super(PLAYER, x, y);
+		this.moveCount = 0;
+		this.addTag("Player");
 	}
 	
 	
@@ -34,6 +41,34 @@ public class Player extends Sprite {
 	 */
 	@Override
 	public void update(Input input, int delta) {
+		int direction = DIR_NONE;
 		
+		if (input.isKeyPressed(Input.KEY_W)) {
+			direction = DIR_UP;
+		} else if (input.isKeyPressed(Input.KEY_A)) {
+			direction = DIR_LEFT;
+		} else if (input.isKeyPressed(Input.KEY_S)) {
+			direction = DIR_DOWN;
+		} else if (input.isKeyPressed(Input.KEY_D)) {
+			direction = DIR_RIGHT;
+		}
+		
+		super.moveToDestination(direction);
+	}
+	
+	
+	
+	/** 
+	 * @param g  The Slick graphics container object.
+	 * @throws SlickException
+	 * @return void
+	 */
+	@Override
+	public void render(Graphics g) throws SlickException {
+		
+		/* Display current number of moves. */
+		g.drawString("Moves: " + moveCount, 0, 0);
+		
+		super.render(g);
 	}
 }
