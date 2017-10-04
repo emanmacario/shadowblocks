@@ -30,11 +30,12 @@ public class Player extends Movable {
 		this.addTag("Player");
 	}
 	
-	
+	/* Direction setter. */
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
 	
+	/* Direction getter. */
 	public int getDirection() {
 		return this.direction;
 	}

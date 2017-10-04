@@ -8,6 +8,9 @@ public abstract class Movable extends Sprite {
 		super(imagePath, x, y);
 	}
 	
+	/* Moves a sprite in a given direction.
+	 * Default of 32 pixels.
+	 */
 	public void moveToDestination(int direction) {
 		
 		float deltaX = 0, deltaY = 0;

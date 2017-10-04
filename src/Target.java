@@ -8,7 +8,6 @@
  * 
  */
 
-
 public class Target extends Sprite {
 	
 	public static final String TARGET = "res/target.png";
@@ -21,6 +20,7 @@ public class Target extends Sprite {
 	public Target(float x, float y) {
 		super(TARGET, x, y);
 		this.activated = false;
+		this.addTag("Target");
 	}
 	
 	/* 
@@ -30,12 +30,20 @@ public class Target extends Sprite {
 	}
 	*/
 	
-	
-	public boolean getIsActive() {
+	public boolean getActivated() {
 		return this.activated;
 	}
 	
-	public void setIsActive(boolean activated) {
+	public void setActivated(boolean activated) {
+		
+		/* Debug statement. */
+		if (activated) {
+			System.out.println("You activated a target!");
+		} else {
+			System.out.println("You deactivated a target!");
+		}
+		
+		
 		this.activated = activated;
 	}
 

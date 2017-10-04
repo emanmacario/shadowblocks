@@ -27,8 +27,7 @@ public class World {
 	
 	
 
-	/** 
-	 * Creates the World object.
+	/** Creates the World object.
 	 */
 	public World() {
 		this.sprites = Loader.loadSprites("res/levels/0.lvl");
@@ -36,13 +35,49 @@ public class World {
 	}
 	
 	
+	/** Restarts the current level.
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public void restartLevel() {
-		this.sprites = Loader.loadSprites("res/levels/" + currentLevel + ".lvl");
+		this.sprites = Loader.loadSprites("res/levels/" + 
+											currentLevel + ".lvl");
 	}
+	
+	/** Loads the next level.
+	 * 
+	 * @param void
+	 * @return void
+	 */
+	public void loadNextLevel() {
+		this.currentLevel += 1;
+		this.sprites = Loader.loadSprites("res/levels/" +
+											currentLevel + ".lvl"); 
+	}
+	
+	/** Checks if the current level is over by checking
+	 * if each target tile is covered by a block.
+	 * 
+	 * @param void
+	 * @return null
+	 */
+	public boolean isLevelOver() {
+		for (Sprite sprite : sprites) {
+			if (sprite instanceof Target) {
+				if (!((Target)sprite).getActivated()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 	
 	
 	/** Checks if a Movable object is moving onto
 	 * a tile that is blocked.
+	 * 
 	 * @param x 	   New x-coordinate of object.
 	 * @param y 	   New y-coordinate of object.
 	 * @return blocked true if blocked else false.
@@ -122,6 +157,20 @@ public class World {
 		}
 	}
 	
+	private int getDirection(Input input) {
+		
+		if (input.isKeyPressed(Input.KEY_W)) {
+			return Sprite.DIR_UP;
+		} else if (input.isKeyPressed(Input.KEY_A)) {
+			return Sprite.DIR_LEFT;
+		} else if (input.isKeyPressed(Input.KEY_S)) {
+			return Sprite.DIR_DOWN;
+		} else if (input.isKeyPressed(Input.KEY_D)) {
+			return Sprite.DIR_RIGHT;
+		}
+		return Sprite.DIR_NONE;
+	}
+	
 	/** 
 	 * Finds the first sprite that matches a given tag.
 	 * 
@@ -157,17 +206,12 @@ public class World {
 			restartLevel();
 		}
 		
-		int direction = Sprite.DIR_NONE;
-		
-		if (input.isKeyPressed(Input.KEY_W)) {
-			direction = Sprite.DIR_UP;
-		} else if (input.isKeyPressed(Input.KEY_A)) {
-			direction = Sprite.DIR_LEFT;
-		} else if (input.isKeyPressed(Input.KEY_S)) {
-			direction = Sprite.DIR_DOWN;
-		} else if (input.isKeyPressed(Input.KEY_D)) {
-			direction = Sprite.DIR_RIGHT;
+		/* Loads next level once current one is finished. */
+		if (isLevelOver()) {
+			loadNextLevel();
 		}
+		
+		int direction = getDirection(input);
 		
 		
 		for (Sprite sprite : sprites) {
@@ -187,15 +231,30 @@ public class World {
 					
 				} else {
 					
-					Sprite object = getSpriteOfType("Block", spriteX, spriteY);
+					Sprite block = getSpriteOfType("Block", spriteX, spriteY);
 					
-					if (object == null) {
+					if (block == null) {
 						return;
+					}
+					
+					Sprite target = getSpriteOfType("Target", sprite.getX(),
+							sprite.getY());
+					
+					if (target != null) {
+						((Target)target).setActivated(false);
 					}
 					
 					if (!isBlocked(blockX, blockY)) {
 						((Movable)sprite).moveToDestination(direction);
-						((Movable)object).moveToDestination(direction);
+						((Movable)block).moveToDestination(direction);
+					}
+					
+					/* Find if there was target on new block tile. */
+					Sprite otherTarget = getSpriteOfType("Target", blockX, blockY);
+					
+					/* If so, activate it. */
+					if (otherTarget != null) {
+						((Target)otherTarget).setActivated(true);
 					}
 				}
 			}
