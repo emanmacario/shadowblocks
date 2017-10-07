@@ -21,8 +21,8 @@ public class Player extends Movable {
 	/** 
 	 * Creates the Player object.
 	 * 
-	 * @param x          The x-coordinate of the sprite, in pixels.
-	 * @param y          The x-coordinate of the sprite, in pixels.
+	 * @param x    The x-coordinate of the sprite, in pixels.
+	 * @param y    The x-coordinate of the sprite, in pixels.
 	 */
 	public Player(float x, float y) {
 		super(PLAYER, x, y);
@@ -38,6 +38,27 @@ public class Player extends Movable {
 	/* Direction getter. */
 	public int getDirection() {
 		return this.direction;
+	}
+	
+	
+	/** Method that updates the state of the Player object 'on move'.
+	 * 
+	 * @param direction
+	 * @param testX
+	 * @param testY
+	 */
+	public void onMove(int direction, float testX, float testY) {
+		this.moveCount++;
+	}
+	
+	
+	/** Undo the most recent move for a player. 
+	 */
+	@Override
+	public void undo() {
+		
+		super.undo();
+		this.moveCount--;
 	}
 	
 	
