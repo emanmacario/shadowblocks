@@ -121,7 +121,7 @@ public class World {
 		/* Iterate through all sprites. */
 		for (Sprite sprite : sprites) {
 			
-			/* Get sprite's x and y tile coordinates. */
+			/* Get a sprite's x and y tile coordinates. */
 			spriteTileX = Loader.getTileX(sprite.getX());
 			spriteTileY = Loader.getTileY(sprite.getY());
 			
@@ -234,19 +234,20 @@ public class World {
 					Sprite block = getSpriteOfType("Block", spriteX, spriteY);
 					
 					if (block == null) {
-						return;
+						continue;
 					}
 					
-					Sprite target = getSpriteOfType("Target", sprite.getX(),
-							sprite.getY());
+					Sprite target = getSpriteOfType("Target", spriteX, spriteY);
 					
-					if (target != null) {
-						((Target)target).setActivated(false);
-					}
+					
 					
 					if (!isBlocked(blockX, blockY)) {
 						((Movable)sprite).moveToDestination(direction);
 						((Movable)block).moveToDestination(direction);
+						
+						if (target != null) {
+							((Target)target).setActivated(false);
+						}
 					}
 					
 					/* Find if there was target on new block tile. */
