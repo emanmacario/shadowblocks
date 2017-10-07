@@ -12,7 +12,7 @@
  */
 
 
-public class Stone extends Movable {
+public class Stone extends Pushable {
 	
 	public static final String STONE = "res/stone.png";
 	
