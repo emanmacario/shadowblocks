@@ -17,16 +17,19 @@ public class Timer {
 		this.time = 0;
 		this.target = target;
 	}
-
-	public void update(int delta) {
-		this.time += delta;
+	
+	public void update(int delta) {		
+		this.time = this.time + delta;
 	}
 	
 	public boolean expired() {
-		if (time >= target) {
+		if (this.time >= this.target) {
 			return true;
 		}
 		return false;
 	}
-	
+		
+	public int getTime() {
+		return this.time;
+	}
 }
