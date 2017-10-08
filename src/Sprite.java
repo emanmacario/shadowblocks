@@ -96,7 +96,7 @@ public abstract class Sprite {
      * @param delta  Time passed since last frame (milliseconds).
      * @return void
      */
-	public void update(Input input, int delta) {
+	public void update(int delta) {
 	}
 	
 	
@@ -108,4 +108,28 @@ public abstract class Sprite {
 	public void render(Graphics g) throws SlickException {
 		image.drawCentered(x, y);
 	}
+	
+	
+	@Override
+	public boolean equals(Object other) {
+		
+		if (this == other) {
+			return true;
+		}
+		
+		if (other == null) {
+			return false;
+		}
+		
+		if (this.getClass() != other.getClass()) {
+			return false;
+		}
+		
+		Sprite sprite = (Sprite) other;
+		return Loader.getTileX(this.x) == Loader.getTileX(sprite.x)
+				&& Loader.getTileY(this.y) == Loader.getTileY(sprite.y);
+		
+		
+	}
+	
 }
