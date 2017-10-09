@@ -21,17 +21,23 @@ public class World {
 	 * World attributes.
 	 */
 	private ArrayList<Sprite> sprites;
-	private Input input;
 	private boolean playerMoved;
 	private int currentLevel;
-	
+		
 	
 
 	/** Creates the World object.
 	 */
 	public World() {
-		this.sprites = Loader.loadSprites("res/levels/0.lvl");
-		this.currentLevel = 0;
+		this.sprites = Loader.loadSprites("res/levels/3.lvl");
+		this.playerMoved = false;
+		this.currentLevel = 3;
+	}
+	
+	
+	/* Destroys a sprite. */
+	public void destroySprite(Sprite sprite) {
+		this.sprites.remove(sprite);
 	}
 	
 	
@@ -41,8 +47,7 @@ public class World {
 	 * @return void
 	 */
 	public void restartLevel() {
-		this.sprites = Loader.loadSprites("res/levels/" + 
-											currentLevel + ".lvl");
+		this.sprites = Loader.loadSprites("res/levels/" + currentLevel + ".lvl");
 	}
 	
 	/** Loads the next level.
@@ -52,8 +57,7 @@ public class World {
 	 */
 	public void loadNextLevel() {
 		this.currentLevel += 1;
-		this.sprites = Loader.loadSprites("res/levels/" +
-											currentLevel + ".lvl"); 
+		this.sprites = Loader.loadSprites("res/levels/" + currentLevel + ".lvl"); 
 	}
 	
 	/** Checks if the current level is over by checking
@@ -63,7 +67,17 @@ public class World {
 	 * @return null
 	 */
 	public boolean isLevelOver() {
+		
+		if (this.currentLevel == 5) {
+			return false;
+		}
+		
 		for (Sprite sprite : sprites) {
+			
+			if (sprite == null) {
+				continue;
+			}
+			
 			if (sprite instanceof Target) {
 				if (!((Target)sprite).getActivated()) {
 					return false;
@@ -121,13 +135,16 @@ public class World {
 		/* Iterate through all sprites. */
 		for (Sprite sprite : sprites) {
 			
+			if (sprite == null) {
+				continue;
+			}
+			
 			/* Get a sprite's x and y tile coordinates. */
 			spriteTileX = Loader.getTileX(sprite.getX());
 			spriteTileY = Loader.getTileY(sprite.getY());
 			
 			/* Test sprite for match. */
-			if (sprite.compareTag(tag) && tileX == spriteTileX
-					&& tileY == spriteTileY) {
+			if (sprite.compareTag(tag) && tileX == spriteTileX && tileY == spriteTileY) {
 				return sprite;
 			}
 		}
@@ -157,6 +174,7 @@ public class World {
 		}
 	}
 	
+	
 	private int getDirection(Input input) {
 		
 		if (input.isKeyPressed(Input.KEY_W)) {
@@ -180,7 +198,7 @@ public class World {
 	public Sprite getSpriteOfType(String tag) {
 
 		for (Sprite sprite : sprites) {
-			if (sprite.compareTag(tag)) {
+			if (sprite != null && sprite.compareTag(tag)) {
 				return sprite;
 			}
 		}
@@ -201,67 +219,160 @@ public class World {
 			System.exit(0);
 		}
 		
-		/* Restart level if 'R' key is pressed. */
-		if (input.isKeyDown(Input.KEY_R)) {
-			restartLevel();
-		}
-		
 		/* Loads next level once current one is finished. */
 		if (isLevelOver()) {
 			loadNextLevel();
 		}
 		
+		/* Restart level if 'R' key is pressed. */
+		if (input.isKeyDown(Input.KEY_R)) {
+			restartLevel();
+		}
+		
+		/* Undo a move if 'Z' key is pressed. */
+		if (input.isKeyPressed(Input.KEY_Z)) {
+			undoMovables();
+		}
+		
+		
 		int direction = getDirection(input);
 		
-		
+	
 		for (Sprite sprite : sprites) {
 			
-			float spriteX = getTestX(sprite.getX(), direction);
-			float spriteY = getTestY(sprite.getY(), direction);
+			if (sprite == null) {
+				continue;
+			}
+			
+			/* Update the sprite. */
+			sprite.update(delta);
+			
+			/* Get its new candidate position. */
+			float testX = getTestX(sprite.getX(), direction);
+			float testY = getTestY(sprite.getY(), direction);
+			
+			/* And the next tile after the new candidate position. */
+			float blockX = getTestX(testX, direction);
+			float blockY = getTestY(testY, direction);
 			
 			
-			float blockX = getTestX(spriteX, direction);
-			float blockY = getTestY(spriteY, direction);
-			
-			if (sprite != null && sprite instanceof Player) {
+			/* If a sprite is a 'unit', we will update it. */
+			if (sprite.compareTag("Unit")) {
 				
-				if (!isBlocked(spriteX, spriteY)) {
-					
+				if (!isBlocked(testX, testY)) {
 					((Movable)sprite).moveToDestination(direction);
 					
 				} else {
 					
-					Sprite block = getSpriteOfType("Block", spriteX, spriteY);
+					Sprite block = getSpriteOfType("Block", testX, testY);
 					
 					if (block == null) {
 						continue;
 					}
 					
-					Sprite target = getSpriteOfType("Target", spriteX, spriteY);
-					
-					
+					Sprite oldTarget = getSpriteOfType("Target", testX, testY);
+					Sprite newTarget = getSpriteOfType("Target", blockX, blockY);
 					
 					if (!isBlocked(blockX, blockY)) {
 						((Movable)sprite).moveToDestination(direction);
-						((Movable)block).moveToDestination(direction);
 						
-						if (target != null) {
-							((Target)target).setActivated(false);
+						((Pushable)block).push(direction);
+						
+						if (oldTarget != null) {
+							((Target)oldTarget).setActivated(false);
+						}
+						
+						if (newTarget != null) {
+							((Target)newTarget).setActivated(true);
+						}
+						
+					} else if (block instanceof TNT) {
+						
+						Sprite crackedWall = getSpriteOfType("Blocked", blockX, blockY);
+						
+						if (crackedWall != null && crackedWall instanceof Cracked) {
+							
+							/* Create a new explosion sprite. 
+							 */
+							Explosion explosion = new Explosion(blockX, blockY);
+							
+							/* Destroy the cracked wall and TNT block, and
+							 * add the explosion sprite to the sprite list.
+							 */
+							this.sprites.remove(crackedWall);
+							this.sprites.remove(block);
+							this.sprites.add(explosion);
+							break;
 						}
 					}
-					
-					/* Find if there was target on new block tile. */
-					Sprite otherTarget = getSpriteOfType("Target", blockX, blockY);
-					
-					/* If so, activate it. */
-					if (otherTarget != null) {
-						((Target)otherTarget).setActivated(true);
-					}
+				}
+			}
+			if (isPlayerDead()) {
+				restartLevel();
+			}
+		}
+	}
+	
+	
+	/** Undoes a bunch of moves.
+	 */
+	public void undoMovables() {
+		
+		int maxSize = getMaxSize();
+		
+		for (Sprite sprite : sprites) {
+			if (sprite instanceof Movable) {
+				if (((Movable)sprite).getStackSize() == maxSize) {
+					((Movable)sprite).undo();
 				}
 			}
 		}
 	}
 	
+	
+	/** Gets the max move history stack size for
+	 * all movable objects.
+	 * @return
+	 */
+	private int getMaxSize() {
+		
+		int maxSize = 0;
+		int stackSize;
+		
+		for (Sprite sprite : sprites) {
+			if (sprite instanceof Movable) {
+				stackSize = ((Movable)sprite).getStackSize();
+					if (stackSize > maxSize) {
+						maxSize = stackSize;
+					}
+			}
+		}
+		return maxSize;
+	}
+	
+	
+	/** Returns if a player is dead, in other words
+	 * if the player has stepped onto the same tile as an enemy unit.
+	 * 
+	 * @return
+	 */
+	public boolean isPlayerDead() {
+		
+		/* Get the player sprite and see if it shares a
+		 * tile position with an enemy unit.
+		 */
+		Sprite player = getSpriteOfType("Player");
+		Sprite enemy = null;
+		
+		if (player != null) {
+			enemy = getSpriteOfType("Enemy", player.getX(), player.getY());
+		}
+		
+		if (enemy == null) {
+			return false;
+		}
+		return true;
+	}
 	
 	
 	/** 
