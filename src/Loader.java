@@ -122,8 +122,27 @@ public class Loader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		// Associate the door and switch if they exist in a level.
+		Sprite door = null;
+		Sprite dSwitch = null;
+		
+		for (Sprite sprite : spriteList) {
+			
+			if (sprite instanceof Switch) {
+				dSwitch = sprite;
+			} else if (sprite instanceof Door) {
+				door = sprite;
+			}
+		}
+		
+		if (dSwitch != null && door != null) {
+			((Switch)dSwitch).setDoor((Door)door);
+		}
+		
 		return spriteList;
 	}
+	
 }
 	
 	

@@ -29,9 +29,9 @@ public class World {
 	/** Creates the World object.
 	 */
 	public World() {
-		this.sprites = Loader.loadSprites("res/levels/3.lvl");
+		this.sprites = Loader.loadSprites("res/levels/2.lvl");
 		this.playerMoved = false;
-		this.currentLevel = 3;
+		this.currentLevel = 2;
 	}
 	
 	
@@ -52,7 +52,7 @@ public class World {
 	 */
 	public void loadNextLevel() {
 		this.currentLevel += 1;
-		this.sprites = Loader.loadSprites("res/levels/" + currentLevel + ".lvl"); 
+		this.sprites = Loader.loadSprites("res/levels/" + currentLevel + ".lvl");
 	}
 	
 	/** Checks if the current level is over by checking
@@ -243,7 +243,8 @@ public class World {
 			/* Update the sprite. */
 			sprite.update(delta);
 			
-			
+			/* If the sprite is a skeleton, check if we need to reverse
+			 * its direction. */
 			if (sprite instanceof Skeleton) {
 				float testX = getTestX(sprite.getX(), ((Unit)sprite).getDirection());
 				float testY = getTestY(sprite.getY(), ((Unit)sprite).getDirection());
@@ -265,7 +266,6 @@ public class World {
 				if (sprite instanceof Player) {
 					((Player)sprite).setDirection(direction);
 				}
-				
 				/* Get new position coordinates. */
 				float testX = getTestX(sprite.getX(), ((Unit)sprite).getDirection());
 				float testY = getTestY(sprite.getY(), ((Unit)sprite).getDirection());
@@ -273,22 +273,6 @@ public class World {
 				/* And the next tile after the new candidate position. */
 				float blockX = getTestX(testX, ((Unit)sprite).getDirection());
 				float blockY = getTestY(testY, ((Unit)sprite).getDirection());
-				
-				
-				/* If the sprite is a skeleton, check if we need to reverse
-				 * its direction.
-				 
-				if (sprite instanceof Skeleton) {
-					
-					System.out.println("Skeleton");
-					
-					if (isBlocked(testX, testY)) {
-						System.out.println("Skeleton blocked");
-						((Skeleton)sprite).reverseDirection();
-					}
-					continue;
-				}
-				*/
 				
 				
 				if (sprite instanceof Rogue) {
@@ -326,6 +310,8 @@ public class World {
 						continue;
 					}
 					
+					Sprite doorSwitchOn = getSpriteOfType("Switch", blockX, blockY);
+					Sprite doorSwitchOff = getSpriteOfType("Switch", testX, testY);
 					Sprite oldTarget = getSpriteOfType("Target", testX, testY);
 					Sprite newTarget = getSpriteOfType("Target", blockX, blockY);
 					
@@ -341,6 +327,14 @@ public class World {
 						
 						if (newTarget != null) {
 							((Target)newTarget).setActivated(true);
+						}
+						
+						if (doorSwitchOn != null) {
+							((Switch)doorSwitchOn).toggle(false);
+						}
+						
+						if (doorSwitchOff != null) {
+							((Switch)doorSwitchOff).toggle(true);
 						}
 						
 					} else if (block instanceof TNT) {
@@ -444,6 +438,23 @@ public class World {
 			return true;
 		}
 		return false;
+	}
+	
+	
+	
+	public void setDoor() {
+		Sprite door = getSpriteOfType("Door");
+		Sprite doorSwitch = getSpriteOfType("Switch");
+		
+		if (doorSwitch != null) {
+			((Switch)doorSwitch).setDoor((Door)door);
+			
+			System.out.println(door != null && doorSwitch != null);
+			
+		} else {
+			System.out.println("Current level: " + currentLevel);
+			System.out.println("There is no door.");
+		}
 	}
 	
 	

@@ -6,6 +6,7 @@ public class Switch extends Sprite {
 	
 	public Switch(float x, float y) {
 		super("res/switch.png", x, y);
+		this.door = null;
 		this.addTag("Switch");
 	}
 	
@@ -14,7 +15,7 @@ public class Switch extends Sprite {
 		this.door = door;
 	}
 	
-	public void toggleSwitch(boolean toggle) {
+	public void toggle(boolean toggle) {
 		door.setClosed(toggle);
 	}
 	
