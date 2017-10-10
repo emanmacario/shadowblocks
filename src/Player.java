@@ -28,16 +28,6 @@ public class Player extends Unit {
 		this.addTag("Player");
 	}
 	
-	/* Direction setter.
-	public void setDirection(int direction) {
-		this.direction = direction;
-	}
-	
-	/* Direction getter. 
-	public int getDirection() {
-		return this.direction;
-	}*/
-	
 	
 	/** Method that updates the state of the Player object 'on move'.
 	 * 
@@ -70,10 +60,9 @@ public class Player extends Unit {
 	 */
 	@Override
 	public void render(Graphics g) throws SlickException {
+		super.render(g);
 		
 		/* Display current number of moves. */
 		g.drawString("Moves: " + moveCount, 0, 0);
-		
-		super.render(g);
 	}
 }

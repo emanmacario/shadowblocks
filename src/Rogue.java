@@ -8,6 +8,7 @@ public class Rogue extends Unit {
 		this.addTag("Enemy");
 	}
 	
+	@Override
 	public void onMove(int direction, float testX, float testY) {
 		super.onMove(direction, testX, testY);
 	}

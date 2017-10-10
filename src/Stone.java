@@ -13,14 +13,12 @@
 
 
 public class Stone extends Pushable {
-	
-	public static final String STONE = "res/stone.png";
-	
+		
 	/** 
 	 * Creates the Stone object.
 	 */
 	public Stone(float x, float y) {
-		super(STONE, x, y);
+		super("res/stone.png", x, y);
 		this.addTag("Block");
 		this.addTag("Blocked");
 	}

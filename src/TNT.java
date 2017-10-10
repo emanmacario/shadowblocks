@@ -6,6 +6,4 @@ public class TNT extends Pushable {
 		this.addTag("Block");
 		this.addTag("Blocked");
 	}
-	
-	
  }

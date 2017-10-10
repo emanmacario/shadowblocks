@@ -9,26 +9,17 @@
  */
 
 public class Target extends Sprite {
-	
-	public static final String TARGET = "res/target.png";
-	
+		
 	private boolean activated;
 
 	/** 
 	 * Creates the Target object.
 	 */
 	public Target(float x, float y) {
-		super(TARGET, x, y);
+		super("res/target.png", x, y);
 		this.activated = false;
 		this.addTag("Target");
 	}
-	
-	/* 
-	@Override
-	public void update(int delta) {
-		
-	}
-	*/
 	
 	public boolean getActivated() {
 		return this.activated;
@@ -42,8 +33,6 @@ public class Target extends Sprite {
 		} else {
 			System.out.println("You deactivated a target!");
 		}
-		
-		
 		this.activated = activated;
 	}
 

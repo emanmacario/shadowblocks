@@ -29,9 +29,9 @@ public class World {
 	/** Creates the World object.
 	 */
 	public World() {
-		this.sprites = Loader.loadSprites("res/levels/2.lvl");
+		this.sprites = Loader.loadSprites("res/levels/4.lvl");
 		this.playerMoved = false;
-		this.currentLevel = 2;
+		this.currentLevel = 4;
 	}
 	
 	
@@ -44,16 +44,6 @@ public class World {
 		this.sprites = Loader.loadSprites("res/levels/" + currentLevel + ".lvl");
 	}
 	
-	
-	/** Loads the next level.
-	 * 
-	 * @param void
-	 * @return void
-	 */
-	public void loadNextLevel() {
-		this.currentLevel += 1;
-		this.sprites = Loader.loadSprites("res/levels/" + currentLevel + ".lvl");
-	}
 	
 	/** Checks if the current level is over by checking
 	 * if each target tile is covered by a block.
@@ -79,6 +69,7 @@ public class World {
 				}
 			}
 		}
+		this.currentLevel++;
 		return true;
 	}
 	
@@ -213,7 +204,7 @@ public class World {
 		}
 		/* Loads next level once current one is finished. */
 		if (isLevelOver()) {
-			loadNextLevel();
+			restartLevel();
 		}
 		/* Restart level if 'R' key is pressed. */
 		if (input.isKeyDown(Input.KEY_R)) {
@@ -246,6 +237,7 @@ public class World {
 			/* If the sprite is a skeleton, check if we need to reverse
 			 * its direction. */
 			if (sprite instanceof Skeleton) {
+				
 				float testX = getTestX(sprite.getX(), ((Unit)sprite).getDirection());
 				float testY = getTestY(sprite.getY(), ((Unit)sprite).getDirection());
 				
@@ -266,6 +258,19 @@ public class World {
 				if (sprite instanceof Player) {
 					((Player)sprite).setDirection(direction);
 				}
+				
+				/* Update mage direction. */
+				if (sprite instanceof Mage) {
+					
+					Sprite player = getSpriteOfType("Player");
+					
+					if (player != null) {
+						((Mage)sprite).update(player.getX(), player.getY());
+					} else {
+						System.exit(0);
+					}
+				}
+				
 				/* Get new position coordinates. */
 				float testX = getTestX(sprite.getX(), ((Unit)sprite).getDirection());
 				float testY = getTestY(sprite.getY(), ((Unit)sprite).getDirection());
@@ -273,6 +278,7 @@ public class World {
 				/* And the next tile after the new candidate position. */
 				float blockX = getTestX(testX, ((Unit)sprite).getDirection());
 				float blockY = getTestY(testY, ((Unit)sprite).getDirection());
+				
 				
 				
 				if (sprite instanceof Rogue) {
@@ -307,6 +313,7 @@ public class World {
 					Sprite block = getSpriteOfType("Block", testX, testY);
 					
 					if (block == null) {
+						((Movable)sprite).moveToDestination(Sprite.DIR_NONE);
 						continue;
 					}
 					
@@ -316,23 +323,19 @@ public class World {
 					Sprite newTarget = getSpriteOfType("Target", blockX, blockY);
 					
 					if (!isBlocked(blockX, blockY)) {
+						
 						((Movable)sprite).moveToDestination(unitDirection);
-						
 						((Pushable)block).push(unitDirection);
-						
 						
 						if (oldTarget != null) {
 							((Target)oldTarget).setActivated(false);
 						}
-						
 						if (newTarget != null) {
 							((Target)newTarget).setActivated(true);
 						}
-						
 						if (doorSwitchOn != null) {
 							((Switch)doorSwitchOn).toggle(false);
 						}
-						
 						if (doorSwitchOff != null) {
 							((Switch)doorSwitchOff).toggle(true);
 						}

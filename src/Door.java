@@ -36,8 +36,5 @@ public class Door extends Sprite {
 			return;
 		}
 		super.render(g);
-
 	}
-	
-	
 }

@@ -127,17 +127,32 @@ public class Loader {
 		Sprite door = null;
 		Sprite dSwitch = null;
 		
+		// Make skeleton after player
+		Sprite player = null;
+		Sprite skeleton = null;
+		
 		for (Sprite sprite : spriteList) {
 			
 			if (sprite instanceof Switch) {
 				dSwitch = sprite;
 			} else if (sprite instanceof Door) {
 				door = sprite;
+			} else if (sprite instanceof Skeleton) {
+				skeleton = sprite;
+			} else if (sprite instanceof Player) {
+				player = sprite;
 			}
 		}
 		
 		if (dSwitch != null && door != null) {
 			((Switch)dSwitch).setDoor((Door)door);
+		}
+		
+		if (skeleton != null) {
+			spriteList.remove(skeleton);
+			spriteList.remove(player);
+			spriteList.add(player);
+			spriteList.add(skeleton);
 		}
 		
 		return spriteList;

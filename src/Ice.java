@@ -21,14 +21,23 @@ public class Ice extends Pushable {
 	@Override
 	public void update(int delta) {
 		
+		/* Update the timer. */
+		if (this.active()) {
+			this.timer.update(delta);
+		}
+		
+		if (this.timer.expired()) {
+			this.timer.reset();
+		}
 	}
 	
 	@Override
 	public boolean active() {
-		return false;
+		return true;
 	}
 	
 	
-	public void addToHistory() {
+	public void setDirection(int direction) {
+		this.direction = direction;
 	}
 }
