@@ -1,22 +1,46 @@
 
-public class Skeleton extends Sprite {
+public class Skeleton extends Unit {
 	
-	public static final String SKELETON = "res/skull.png";
+	private Timer timer;
 	
 	public Skeleton(float x, float y) {
-		super(SKELETON, x, y);
+		super("res/skull.png", x, y, DIR_UP);
+		this.timer = new Timer(1000);
+		this.addTag("Unit");
+		this.addTag("Enemy");
 	}
-	
-	public void undo() {
 		
-	}
 	
+	@Override
 	public void onMove(int direction, float testX, float testY) {
-		
+		super.onMove(direction, testX, testY);
 	}
 	
 	
+	@Override
 	public void update(int delta) {
 		
+		/* Update the timer. */
+		this.timer.update(delta);
+		
+		/* Reset the timer if it expires. */
+		if (timer.expired()) {
+			this.moveToDestination(this.getDirection());
+			timer.reset();
+		}
+	}
+	
+	
+	/* If the Skeleton was blocked and could not 
+	 * move, reverse its current direction.
+	 */
+	public void reverseDirection() {
+		
+		if (this.getDirection() == DIR_UP) {
+			this.setDirection(DIR_DOWN);
+		} else {
+			this.setDirection(DIR_UP);
+		}
+		timer.reset();
 	}
 }
