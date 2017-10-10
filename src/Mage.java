@@ -1,10 +1,10 @@
 
-public class Mage extends Sprite {
-	
-	public static final String MAGE = "res/mage.png";
+public class Mage extends Unit {
 	
 	public Mage(float x, float y) {
-		super(MAGE, x, y);
+		super("res/mage.png", x, y, DIR_NONE);
+		this.addTag("Unit");
+		this.addTag("");
 	}
 	
 	

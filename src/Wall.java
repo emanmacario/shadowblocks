@@ -12,13 +12,11 @@
 
 public class Wall extends Sprite {
 	
-	public static final String WALL = "res/wall.png";
-	
 	/** 
 	 * Creates the Wall object.
 	 */
 	public Wall(float x, float y) {
-		super(WALL, x, y);
+		super("res/wall.png", x, y);
 		this.addTag("Blocked");
 	}
 }

@@ -5,18 +5,17 @@
  * Email: macarioe@student.unimelb.edu.au
  * 
  * This file contains the Pushable class, which represents
- * a game object which can be pushed by a Movable object.
+ * a game object which can be pushed by a Unit.
  */
 
 public abstract class Pushable extends Movable {
 	
-	public Pushable(String imagePath, float x, float y) {
-		super(imagePath, x, y);
+	public Pushable(String imageSource, float x, float y) {
+		super(imageSource, x, y);
 	}
 	
-	
 	public void push(int direction) {
-		super.moveToDestination(direction);
+		moveToDestination(direction);
 	}
 	
 	public boolean active() {

@@ -1,15 +1,22 @@
 
 
 public class Switch extends Sprite {
-	
-	public static final String SWITCH = "res/switch.png";
+		
+	private Door door;
 	
 	public Switch(float x, float y) {
-		super(SWITCH, x, y);
+		super("res/switch.png", x, y);
+		this.addTag("Switch");
 	}
 	
-	//@Override
-	//public void update(int delta) {
-		
-	//}
+	
+	public void setDoor(Door door) {
+		this.door = door;
+	}
+	
+	public void toggleSwitch(boolean toggle) {
+		door.setClosed(toggle);
+	}
+	
+	
 }

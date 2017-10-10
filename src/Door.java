@@ -5,19 +5,27 @@ public class Door extends Sprite {
 	
 	private boolean closed;
 	
-	public static final String DOOR = "res/door.png";
-	
 	public Door(float x, float y) {
-		super(DOOR, x, y);
+		super("res/door.png", x, y);
 		this.closed = true;
 	}
+	
 	
 	public boolean getClosed() {
 		return this.closed;
 	}
 	
 	public void setClosed(boolean closed) {
+		
+		/* Set door to open/closed. */
 		this.closed = closed;
+		
+		if (!closed) {
+			this.removeTag("Blocked");
+		} else {
+			this.addTag("Blocked");
+		}
+		
 	}
 	
 	@Override

@@ -35,12 +35,6 @@ public class World {
 	}
 	
 	
-	/* Destroys a sprite. */
-	public void destroySprite(Sprite sprite) {
-		this.sprites.remove(sprite);
-	}
-	
-	
 	/** Restarts the current level.
 	 * 
 	 * @param void
@@ -49,6 +43,7 @@ public class World {
 	public void restartLevel() {
 		this.sprites = Loader.loadSprites("res/levels/" + currentLevel + ".lvl");
 	}
+	
 	
 	/** Loads the next level.
 	 * 
@@ -112,7 +107,6 @@ public class World {
 		if (sprite != null) {
 			return true;
 		}
-		
 		return false;
 	}
 	
@@ -138,7 +132,6 @@ public class World {
 			if (sprite == null) {
 				continue;
 			}
-			
 			/* Get a sprite's x and y tile coordinates. */
 			spriteTileX = Loader.getTileX(sprite.getX());
 			spriteTileY = Loader.getTileY(sprite.getY());
@@ -218,28 +211,31 @@ public class World {
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
 			System.exit(0);
 		}
-		
 		/* Loads next level once current one is finished. */
 		if (isLevelOver()) {
 			loadNextLevel();
 		}
-		
 		/* Restart level if 'R' key is pressed. */
 		if (input.isKeyDown(Input.KEY_R)) {
 			restartLevel();
 		}
-		
 		/* Undo a move if 'Z' key is pressed. */
 		if (input.isKeyPressed(Input.KEY_Z)) {
 			undoMovables();
 		}
 		
-		
 		int direction = getDirection(input);
 		
-	
+		if (direction != Sprite.DIR_NONE) {
+			playerMoved = true;
+		} else {
+			playerMoved = false;
+		}
+		
+		
 		for (Sprite sprite : sprites) {
 			
+			/* Check for null. */
 			if (sprite == null) {
 				continue;
 			}
@@ -247,22 +243,82 @@ public class World {
 			/* Update the sprite. */
 			sprite.update(delta);
 			
-			/* Get its new candidate position. */
-			float testX = getTestX(sprite.getX(), direction);
-			float testY = getTestY(sprite.getY(), direction);
 			
-			/* And the next tile after the new candidate position. */
-			float blockX = getTestX(testX, direction);
-			float blockY = getTestY(testY, direction);
-			
+			if (sprite instanceof Skeleton) {
+				float testX = getTestX(sprite.getX(), ((Unit)sprite).getDirection());
+				float testY = getTestY(sprite.getY(), ((Unit)sprite).getDirection());
+				
+				if (isBlocked(testX, testY)) {
+					((Skeleton)sprite).reverseDirection();
+				}
+				continue;
+			}
+		
+			if (!playerMoved) {
+				continue;
+			}
 			
 			/* If a sprite is a 'unit', we will update it. */
 			if (sprite.compareTag("Unit")) {
 				
-				if (!isBlocked(testX, testY)) {
-					((Movable)sprite).moveToDestination(direction);
+				/* Update player direction. */
+				if (sprite instanceof Player) {
+					((Player)sprite).setDirection(direction);
+				}
+				
+				/* Get new position coordinates. */
+				float testX = getTestX(sprite.getX(), ((Unit)sprite).getDirection());
+				float testY = getTestY(sprite.getY(), ((Unit)sprite).getDirection());
+				
+				/* And the next tile after the new candidate position. */
+				float blockX = getTestX(testX, ((Unit)sprite).getDirection());
+				float blockY = getTestY(testY, ((Unit)sprite).getDirection());
+				
+				
+				/* If the sprite is a skeleton, check if we need to reverse
+				 * its direction.
+				 
+				if (sprite instanceof Skeleton) {
 					
-				} else {
+					System.out.println("Skeleton");
+					
+					if (isBlocked(testX, testY)) {
+						System.out.println("Skeleton blocked");
+						((Skeleton)sprite).reverseDirection();
+					}
+					continue;
+				}
+				*/
+				
+				
+				if (sprite instanceof Rogue) {
+							
+					if (isBlocked(testX, testY)) {
+						
+						Sprite block = getSpriteOfType("Block", testX, testY);
+						
+						if (block == null) {
+							((Rogue)sprite).reverseDirection();
+						} else if (isBlocked(blockX, blockY)) {
+							((Rogue)sprite).reverseDirection();
+						}
+					}
+				}
+				
+			
+				
+				int unitDirection = ((Unit)sprite).getDirection();
+				
+				
+				/* If a unit is not blocked, then just move to the
+				 * new destination.
+				 */
+				if (!isBlocked(testX, testY)) {
+					((Movable)sprite).moveToDestination(unitDirection);
+					
+				} 
+				/* Otherwise, check if a block can be pushed. */
+				else {
 					
 					Sprite block = getSpriteOfType("Block", testX, testY);
 					
@@ -274,9 +330,10 @@ public class World {
 					Sprite newTarget = getSpriteOfType("Target", blockX, blockY);
 					
 					if (!isBlocked(blockX, blockY)) {
-						((Movable)sprite).moveToDestination(direction);
+						((Movable)sprite).moveToDestination(unitDirection);
 						
-						((Pushable)block).push(direction);
+						((Pushable)block).push(unitDirection);
+						
 						
 						if (oldTarget != null) {
 							((Target)oldTarget).setActivated(false);
@@ -307,6 +364,7 @@ public class World {
 					}
 				}
 			}
+			/* Check if the player is dead. */
 			if (isPlayerDead()) {
 				restartLevel();
 			}
@@ -351,6 +409,20 @@ public class World {
 	}
 	
 	
+	public void updateMovableHistory() {
+		
+		int maxSize = getMaxSize();
+		
+		for (Sprite sprite : sprites) {
+			if (sprite instanceof Movable &&
+					((Movable)sprite).getStackSize() < maxSize) {
+				
+				((Movable)sprite).addToHistory(sprite.getX(), sprite.getY());	
+			}
+		}
+	}
+	
+	
 	/** Returns if a player is dead, in other words
 	 * if the player has stepped onto the same tile as an enemy unit.
 	 * 
@@ -368,10 +440,10 @@ public class World {
 			enemy = getSpriteOfType("Enemy", player.getX(), player.getY());
 		}
 		
-		if (enemy == null) {
-			return false;
+		if (enemy != null) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	

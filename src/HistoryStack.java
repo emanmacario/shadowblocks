@@ -42,19 +42,4 @@ public class HistoryStack {
 		
 		return this.moves.pop();
 	}
-	
-	
-	public void printHistory() {
-		Stack<Vector2f> newStack = new Stack<>();
-		
-		newStack.addAll(moves);
-		
-		while (!newStack.empty()) {
-			Vector2f move = newStack.pop();
-			
-			System.out.println("x: " + move.getX() + "y: " + move.getY());
-	
-		}
-		
-	}
 }

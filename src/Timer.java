@@ -28,8 +28,12 @@ public class Timer {
 		}
 		return false;
 	}
-		
-	public int getTime() {
-		return this.time;
+	
+	/* Resets the timer (only if it has expired first). */
+	public void reset() {
+		if (this.expired()) {
+			this.time = 0;
+		}
 	}
+	
 }

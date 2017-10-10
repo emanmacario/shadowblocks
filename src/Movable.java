@@ -3,17 +3,20 @@ import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Movable extends Sprite {
 	
+	
 	/** Instance variables.
 	 */
 	private HistoryStack history;
 	
+	
 	/** 
 	 * Creates a Movable object.
 	 */
-	public Movable(String imagePath, float x, float y) {
-		super(imagePath, x, y);
+	public Movable(String imageSource, float x, float y) {
+		super(imageSource, x, y);
 		this.history = new HistoryStack();
 	}
+	
 	
 	/** Moves sprite in a given direction, with a default
 	 * displacement of the standard tile size.
@@ -39,16 +42,60 @@ public abstract class Movable extends Sprite {
 			case DIR_DOWN:
 				deltaY = App.TILE_SIZE;
 				break;
-			default:
-				return;
+			case DIR_NONE:
+				break;
 		}
+		/* Now, actually move. */
+		onMove(direction, this.getX() + deltaX, this.getY() + deltaY);
+
+	}
+	
+	/** Moves sprite in a given direction, with a 
+	 * displacement of the input speed.
+	 * 
+	 * @param direction
+	 * @return void
+	 */
+	public void moveToDestination(int direction, float speed) {
+		float deltaX = 0, deltaY = 0;
 		
-		/* Add previous position to history. */
+		/* Translate the direction into x and y displacement. */
+		switch (direction) {
+			case DIR_LEFT:
+				deltaX = -speed;
+				break;
+			case DIR_RIGHT:
+				deltaX = speed;
+				break;
+			case DIR_UP:
+				deltaY = -speed;
+				break;
+			case DIR_DOWN:
+				deltaY = speed;
+				break;
+			default:
+				break;
+		}
+		/* Now, actually move. */
+		onMove(direction, this.getX() + deltaX, this.getY() + deltaY);
+	}
+	
+	
+	/** When a call to moveToDestination is made, convert the data
+	 * and execute the move.
+	 * 
+	 * @param direction
+	 * @param testX
+	 * @param testY
+	 */
+	public void onMove(int direction, float testX, float testY) {
+		
+		/* Add the original position to history. */
 		this.addToHistory(this.getX(), this.getY());
 		
 		/* Move to the new destination. */
-		this.setX(this.getX() + deltaX);
-		this.setY(this.getY() + deltaY);
+		this.setX(testX);
+		this.setY(testY);
 	}
 	
 	
@@ -77,13 +124,20 @@ public abstract class Movable extends Sprite {
 	 * @return void
 	 */
 	public void undo() {
-				
+		
+		/* First, check if the sprite has a move history. */
 		if (this.hasHistory()) {
 			
+			/* Get the most previous move, and undo it. */
 			Vector2f move = this.history.pop();
 			
 			this.setX(move.getX());
 			this.setY(move.getY());
 		}
+	}
+	
+	/** Returns the size of the stack. */
+	public int getStackSize() {
+		return this.history.getStackSize();
 	}
 }

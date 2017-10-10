@@ -12,7 +12,6 @@
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 
 import java.util.ArrayList;
 
@@ -56,7 +55,6 @@ public abstract class Sprite {
 		this.tags.add(tag);
 	}
 	
-	
 	public void removeTag(String tag) {
 		this.tags.remove(tag);
 	}
@@ -97,6 +95,7 @@ public abstract class Sprite {
      * @return void
      */
 	public void update(int delta) {
+		
 	}
 	
 	
@@ -110,6 +109,8 @@ public abstract class Sprite {
 	}
 	
 	
+	/** Standard overridden equals method.
+	 */
 	@Override
 	public boolean equals(Object other) {
 		
@@ -128,8 +129,6 @@ public abstract class Sprite {
 		Sprite sprite = (Sprite) other;
 		return Loader.getTileX(this.x) == Loader.getTileX(sprite.x)
 				&& Loader.getTileY(this.y) == Loader.getTileY(sprite.y);
-		
-		
 	}
 	
 }
