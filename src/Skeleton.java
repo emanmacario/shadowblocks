@@ -18,7 +18,7 @@ public class Skeleton extends Unit {
 	
 	
 	@Override
-	public void update(int delta) {
+	public void update(World world, int delta) {
 		
 		/* Update the timer. */
 		this.timer.update(delta);

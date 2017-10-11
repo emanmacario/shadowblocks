@@ -20,7 +20,7 @@ public class Explosion extends Sprite {
 	 * @param delta
 	 */
 	@Override
-	public void update(int delta) {
+	public void update(World world, int delta) {
 		this.timer.update(delta);
 	}
 	

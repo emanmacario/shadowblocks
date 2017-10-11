@@ -19,7 +19,7 @@ public class Ice extends Pushable {
 	}
 	
 	@Override
-	public void update(int delta) {
+	public void update(World world, int delta) {
 		
 		/* Update the timer. */
 		if (this.active()) {

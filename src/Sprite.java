@@ -94,7 +94,7 @@ public abstract class Sprite {
      * @param delta  Time passed since last frame (milliseconds).
      * @return void
      */
-	public void update(int delta) {
+	public void update(World world, int delta) {
 		
 	}
 	

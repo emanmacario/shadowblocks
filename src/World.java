@@ -23,15 +23,16 @@ public class World {
 	private ArrayList<Sprite> sprites;
 	private boolean playerMoved;
 	private int currentLevel;
+	private Input input;
 		
 	
 
 	/** Creates the World object.
 	 */
 	public World() {
-		this.sprites = Loader.loadSprites("res/levels/4.lvl");
+		this.sprites = Loader.loadSprites("res/levels/0.lvl");
 		this.playerMoved = false;
-		this.currentLevel = 4;
+		this.currentLevel = 0;
 	}
 	
 	
@@ -136,42 +137,10 @@ public class World {
 	}
 	
 	
-	private float getTestX(float x, int direction) {
-		switch (direction) {
-			case Sprite.DIR_LEFT:
-				return x-App.TILE_SIZE;
-			case Sprite.DIR_RIGHT:
-				return x+App.TILE_SIZE;
-			default:
-				return x;
-		}
-	}
-	
-	private float getTestY(float y, int direction) {
-		switch (direction) {
-			case Sprite.DIR_UP:
-				return y-App.TILE_SIZE;
-			case Sprite.DIR_DOWN:
-				return y+App.TILE_SIZE;
-			default:
-				return y;
-		}
-	}
+
 	
 	
-	private int getDirection(Input input) {
-		
-		if (input.isKeyPressed(Input.KEY_W)) {
-			return Sprite.DIR_UP;
-		} else if (input.isKeyPressed(Input.KEY_A)) {
-			return Sprite.DIR_LEFT;
-		} else if (input.isKeyPressed(Input.KEY_S)) {
-			return Sprite.DIR_DOWN;
-		} else if (input.isKeyPressed(Input.KEY_D)) {
-			return Sprite.DIR_RIGHT;
-		}
-		return Sprite.DIR_NONE;
-	}
+	
 	
 	/** 
 	 * Finds the first sprite that matches a given tag.
@@ -196,7 +165,10 @@ public class World {
      * @param input  The Slick input object, used for getting keyboard input.
      * @param delta  Time passed since last frame (milliseconds).
      */
-	public void update(Input input, int delta) {	
+	public void update(Input input, int delta) {
+		
+		/* Set the input. */
+		this.input = input;
 		
 		/* Exit game if 'ESC' key is pressed. */
 		if (input.isKeyDown(Input.KEY_ESCAPE)) {
@@ -215,13 +187,6 @@ public class World {
 			undoMovables();
 		}
 		
-		int direction = getDirection(input);
-		
-		if (direction != Sprite.DIR_NONE) {
-			playerMoved = true;
-		} else {
-			playerMoved = false;
-		}
 		
 		
 		for (Sprite sprite : sprites) {
@@ -232,142 +197,13 @@ public class World {
 			}
 			
 			/* Update the sprite. */
-			sprite.update(delta);
-			
-			/* If the sprite is a skeleton, check if we need to reverse
-			 * its direction. */
-			if (sprite instanceof Skeleton) {
-				
-				float testX = getTestX(sprite.getX(), ((Unit)sprite).getDirection());
-				float testY = getTestY(sprite.getY(), ((Unit)sprite).getDirection());
-				
-				if (isBlocked(testX, testY)) {
-					((Skeleton)sprite).reverseDirection();
-				}
-				continue;
-			}
-		
-			if (!playerMoved) {
-				continue;
-			}
-			
-			/* If a sprite is a 'unit', we will update it. */
-			if (sprite.compareTag("Unit")) {
-				
-				/* Update player direction. */
-				if (sprite instanceof Player) {
-					((Player)sprite).setDirection(direction);
-				}
-				
-				/* Update mage direction. */
-				if (sprite instanceof Mage) {
-					
-					Sprite player = getSpriteOfType("Player");
-					
-					if (player != null) {
-						((Mage)sprite).update(player.getX(), player.getY());
-					} else {
-						System.exit(0);
-					}
-				}
-				
-				/* Get new position coordinates. */
-				float testX = getTestX(sprite.getX(), ((Unit)sprite).getDirection());
-				float testY = getTestY(sprite.getY(), ((Unit)sprite).getDirection());
-				
-				/* And the next tile after the new candidate position. */
-				float blockX = getTestX(testX, ((Unit)sprite).getDirection());
-				float blockY = getTestY(testY, ((Unit)sprite).getDirection());
-				
-				
-				
-				if (sprite instanceof Rogue) {
-							
-					if (isBlocked(testX, testY)) {
-						
-						Sprite block = getSpriteOfType("Block", testX, testY);
-						
-						if (block == null) {
-							((Rogue)sprite).reverseDirection();
-						} else if (isBlocked(blockX, blockY)) {
-							((Rogue)sprite).reverseDirection();
-						}
-					}
-				}
-				
-			
-				
-				int unitDirection = ((Unit)sprite).getDirection();
-				
-				
-				/* If a unit is not blocked, then just move to the
-				 * new destination.
-				 */
-				if (!isBlocked(testX, testY)) {
-					((Movable)sprite).moveToDestination(unitDirection);
-					
-				} 
-				/* Otherwise, check if a block can be pushed. */
-				else {
-					
-					Sprite block = getSpriteOfType("Block", testX, testY);
-					
-					if (block == null) {
-						((Movable)sprite).moveToDestination(Sprite.DIR_NONE);
-						continue;
-					}
-					
-					Sprite doorSwitchOn = getSpriteOfType("Switch", blockX, blockY);
-					Sprite doorSwitchOff = getSpriteOfType("Switch", testX, testY);
-					Sprite oldTarget = getSpriteOfType("Target", testX, testY);
-					Sprite newTarget = getSpriteOfType("Target", blockX, blockY);
-					
-					if (!isBlocked(blockX, blockY)) {
-						
-						((Movable)sprite).moveToDestination(unitDirection);
-						((Pushable)block).push(unitDirection);
-						
-						if (oldTarget != null) {
-							((Target)oldTarget).setActivated(false);
-						}
-						if (newTarget != null) {
-							((Target)newTarget).setActivated(true);
-						}
-						if (doorSwitchOn != null) {
-							((Switch)doorSwitchOn).toggle(false);
-						}
-						if (doorSwitchOff != null) {
-							((Switch)doorSwitchOff).toggle(true);
-						}
-						
-					} else if (block instanceof TNT) {
-						
-						Sprite crackedWall = getSpriteOfType("Blocked", blockX, blockY);
-						
-						if (crackedWall != null && crackedWall instanceof Cracked) {
-							
-							/* Create a new explosion sprite. 
-							 */
-							Explosion explosion = new Explosion(blockX, blockY);
-							
-							/* Destroy the cracked wall and TNT block, and
-							 * add the explosion sprite to the sprite list.
-							 */
-							this.sprites.remove(crackedWall);
-							this.sprites.remove(block);
-							this.sprites.add(explosion);
-							break;
-						}
-					}
-				}
-			}
-			/* Check if the player is dead. */
-			if (isPlayerDead()) {
-				restartLevel();
-			}
+			sprite.update(this, delta);
 		}
 	}
 	
+	
+	
+		
 	
 	/** Undoes a bunch of moves.
 	 */
@@ -459,6 +295,45 @@ public class World {
 			System.out.println("There is no door.");
 		}
 	}
+	
+	
+	/** Takes a sprite and 'creates' it, or in other
+	 * words just adds it to the world's sprite list.
+	 * 
+	 * @param sprite
+	 * @return void
+	 */
+	public void createSprite(Sprite sprite) {
+		this.sprites.add(sprite);
+	}
+	
+	/** Takes a sprite and 'destroys' it, or in other
+	 * words removes it from the world's sprite list.
+	 * 
+	 * @param sprite
+	 * @return void
+	 */
+	public void destroySprite(Sprite sprite) {
+		this.sprites.remove(sprite);
+	}
+	
+	
+	
+	/* Bunch of getters/setters. */
+	
+	public void setPlayerMoved(boolean playerMoved) {
+		this.playerMoved = playerMoved;
+	}
+	
+	public boolean getPlayerMoved() {
+		return this.playerMoved;
+	}
+	
+
+	public Input getInput() {
+		return this.input;
+	}
+	
 	
 	
 	/** 
