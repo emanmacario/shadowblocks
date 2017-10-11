@@ -7,7 +7,6 @@ public class Switch extends Sprite {
 	public Switch(float x, float y) {
 		super("res/switch.png", x, y);
 		this.door = null;
-		this.addTag("Switch");
 	}
 	
 	
@@ -15,9 +14,23 @@ public class Switch extends Sprite {
 		this.door = door;
 	}
 	
-	public void toggle(boolean toggle) {
-		door.setClosed(toggle);
+	@Override
+	public void update(World world, int delta) {
+		
+		/* Check if there is a block on
+		 * the door switch.
+		 */
+		Sprite block = world.getSpriteOfType("Block", 
+								this.getX(), this.getY());
+		
+		/* Open the door if so, otherwise
+		 * door remains shut.
+		 */
+		if (block != null) {
+			door.setClosed(false);
+		} else {
+			door.setClosed(true);
+		}
 	}
-	
 	
 }

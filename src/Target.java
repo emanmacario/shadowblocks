@@ -29,11 +29,27 @@ public class Target extends Sprite {
 		
 		/* Debug statement. */
 		if (activated) {
-			System.out.println("You activated a target!");
+			//System.out.println("You activated a target!");
 		} else {
-			System.out.println("You deactivated a target!");
+			//System.out.println("You deactivated a target!");
 		}
 		this.activated = activated;
 	}
+	
+	
+	@Override
+	public void update(World world, int delta) {
+		
+		Sprite block = world.getSpriteOfType("Block", 
+										this.getX(), this.getY());
+		
+		if (block != null) {
+			this.setActivated(true);
+		} else {
+			this.setActivated(false);
+		}
+		
+	}
+	
 
 }

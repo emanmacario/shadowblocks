@@ -9,7 +9,7 @@ public class Mage extends Unit {
 		super("res/mage.png", x, y, DIR_NONE);
 		this.addTag("Unit");
 		this.addTag("Mage");
-		this.addTag("Enmy");
+		this.addTag("Eney");
 	}
 	
 		

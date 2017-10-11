@@ -23,6 +23,7 @@ public class World {
 	private ArrayList<Sprite> sprites;
 	private boolean playerMoved;
 	private int currentLevel;
+	private boolean explosionActive;
 	private Input input;
 		
 	
@@ -30,9 +31,9 @@ public class World {
 	/** Creates the World object.
 	 */
 	public World() {
-		this.sprites = Loader.loadSprites("res/levels/0.lvl");
+		this.sprites = Loader.loadSprites("res/levels/3.lvl");
 		this.playerMoved = false;
-		this.currentLevel = 0;
+		this.currentLevel = 3;
 	}
 	
 	
@@ -198,6 +199,16 @@ public class World {
 			
 			/* Update the sprite. */
 			sprite.update(this, delta);
+			
+			
+			/* Check if an update to a sprite
+			 * causes concurrent modification
+			 * of the sprite list.
+			 */
+			if (explosionActive) {
+				explosionActive = false;
+				break;
+			}
 		}
 	}
 	
@@ -329,10 +340,11 @@ public class World {
 		return this.playerMoved;
 	}
 	
-
 	public Input getInput() {
 		return this.input;
 	}
+	
+	
 	
 	
 	

@@ -57,6 +57,11 @@ public class Player extends Unit {
 	@Override
 	public void update(World world, int delta) {
 		
+		/* Firstly check if the player is dead. */
+		if (isPlayerDead(world)) {
+			world.restartLevel();
+		}
+		
 		/* Get the direction. */
 		Input input = world.getInput();
 		
@@ -149,6 +154,23 @@ public class Player extends Unit {
 		}
 		
 		return DIR_NONE;
+	}
+	
+	
+	/** Checks if a player is 'dead', by checking
+	 * if the player shares a position with an 'Enemy'.
+	 * 
+	 * @param world
+	 * @return boolean
+	 */
+	private boolean isPlayerDead(World world) {
+		
+		if (world.getSpriteOfType("Enemy", 
+					this.getX(), this.getY()) != null) {
+			
+			return true;
+		}
+		return false;
 	}
 	
 	
