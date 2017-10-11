@@ -50,6 +50,7 @@ public abstract class Movable extends Sprite {
 
 	}
 	
+		
 	/** Moves sprite in a given direction, with a 
 	 * displacement of the input speed.
 	 * 
@@ -79,6 +80,40 @@ public abstract class Movable extends Sprite {
 		/* Now, actually move. */
 		onMove(direction, this.getX() + deltaX, this.getY() + deltaY);
 	}
+	
+	
+	
+	/** Returns a pixel coordinate based on the direction
+	 * of movement.
+	 * 
+	 * @param x
+	 * @param direction
+	 * @return position
+	 */
+	public float getTestX(float x, int direction) {
+		switch (direction) {
+			case DIR_LEFT:
+				return x - App.TILE_SIZE;
+			case DIR_RIGHT:
+				return x + App.TILE_SIZE;
+			default:
+				return x;
+			
+		}
+	}
+	
+	
+	public float getTestY(float y, int direction) {
+		switch(direction) {
+			case DIR_UP:
+				return y - App.TILE_SIZE;
+			case DIR_DOWN:
+				return y + App.TILE_SIZE;
+			default:
+				return y;
+		}
+	}
+	
 	
 	
 	/** When a call to moveToDestination is made, convert the data
