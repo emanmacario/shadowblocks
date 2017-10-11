@@ -152,12 +152,13 @@ public class Loader {
 			((Switch)dSwitch).setDoor((Door)door);
 		}
 		
+		/*
 		if (skeleton != null) {
 			spriteList.remove(skeleton);
 			spriteList.remove(player);
 			spriteList.add(player);
 			spriteList.add(skeleton);
-		}
+		}*/
 		
 		return spriteList;
 	}

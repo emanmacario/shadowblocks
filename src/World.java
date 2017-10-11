@@ -30,10 +30,10 @@ public class World {
 	/** Creates the World object.
 	 */
 	public World() {
-		this.sprites = Loader.loadSprites("res/levels/2.lvl");
+		this.sprites = Loader.loadSprites("res/levels/0.lvl");
 		this.toCreate = new ArrayList<>();
 		this.playerMoved = false;
-		this.currentLevel = 2;
+		this.currentLevel = 0;
 	}
 	
 	
@@ -203,7 +203,7 @@ public class World {
 		}
 		
 		/* Check if we need to create any sprites,
-		 * and if so create them!
+		 * (namely explosions) and if so create them!
 		 */
 		sprites.addAll(toCreate);
 		toCreate.clear();
@@ -263,48 +263,7 @@ public class World {
 		}
 	}
 	
-	
-	/** Returns if a player is dead, in other words
-	 * if the player has stepped onto the same tile as an enemy unit.
-	 * 
-	 * @return
-	 */
-	public boolean isPlayerDead() {
 		
-		/* Get the player sprite and see if it shares a
-		 * tile position with an enemy unit.
-		 */
-		Sprite player = getSpriteOfType("Player");
-		Sprite enemy = null;
-		
-		if (player != null) {
-			enemy = getSpriteOfType("Enemy", player.getX(), player.getY());
-		}
-		
-		if (enemy != null) {
-			return true;
-		}
-		return false;
-	}
-	
-	
-	
-	public void setDoor() {
-		Sprite door = getSpriteOfType("Door");
-		Sprite doorSwitch = getSpriteOfType("Switch");
-		
-		if (doorSwitch != null) {
-			((Switch)doorSwitch).setDoor((Door)door);
-			
-			System.out.println(door != null && doorSwitch != null);
-			
-		} else {
-			System.out.println("Current level: " + currentLevel);
-			System.out.println("There is no door.");
-		}
-	}
-	
-	
 	/** Takes a sprite and 'creates' it, or in other
 	 * words just adds it to the world's sprite list.
 	 * 
@@ -340,8 +299,6 @@ public class World {
 	public Input getInput() {
 		return this.input;
 	}
-	
-	
 	
 	
 	

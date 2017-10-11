@@ -9,11 +9,38 @@ public class Mage extends Unit {
 		super("res/mage.png", x, y, DIR_NONE);
 		this.addTag("Unit");
 		this.addTag("Mage");
-		this.addTag("Eney");
+		this.addTag("Enemy");
 	}
 	
 		
+	@Override
+	public void update(World world, int delta) {
+		
+		/* Run the algorithm when player moves,
+		 * and move if possible.
+		 */
+		if (world.getPlayerMoved()) {
+			Sprite player = world.getSpriteOfType("Player");
+			
+			this.update(player.getX(), player.getY());
+			
+			/* Calculate mage's new candidate position. 
+			 */
+			float testX = this.getTestX(this.getX(), this.getDirection());
+			float testY = this.getTestY(this.getY(), this.getDirection());
+			
+			if (!world.isBlocked(testX, testY)) {
+				this.moveToDestination(this.getDirection());
+			}
+		}
+	}
 	
+	
+	/** Mage algorithm.
+	 * 
+	 * @param playerX
+	 * @param playerY
+	 */
 	public void update(float playerX, float playerY) {
 		
 		distX = playerX - this.getX();
