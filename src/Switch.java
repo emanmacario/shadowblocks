@@ -27,8 +27,13 @@ public class Switch extends Sprite {
 		 * door remains shut.
 		 */
 		if (block != null) {
+			
+			//System.out.println("Open door");
+			
 			door.setClosed(false);
 		} else {
+			
+			//System.out.println("Close door");
 			door.setClosed(true);
 		}
 	}

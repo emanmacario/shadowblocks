@@ -55,11 +55,8 @@ public class Rogue extends Unit {
             	this.moveToDestination(this.getDirection());
             	((Pushable)block).push(this.getDirection());
             }
+            
 		} else {
-			
-			/* Rogue moves freely. */
-			
-			System.out.println("Rogue moving freely");
 			
 			this.moveToDestination(this.getDirection());
 		}

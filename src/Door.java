@@ -9,7 +9,6 @@ public class Door extends Sprite {
 		super("res/door.png", x, y);
 		this.closed = true;
 		this.addTag("Door");
-		this.addTag("Blocked");
 	}
 	
 	
@@ -19,15 +18,29 @@ public class Door extends Sprite {
 	
 	public void setClosed(boolean closed) {
 		
-		/* Set door to open/closed. */
+		/* Set door to open/closed. 
+		 */
 		this.closed = closed;
 		
+		/* And add/remove "Blocked" tag
+		 * to indicate to Movable objects
+		 * that they cannot move through.
+		 */
 		if (!closed) {
-			this.removeTag("Blocked");
+			
+			if (this.compareTag("Blocked")) {
+				
+				System.out.println("Removed blocked tag");
+				this.removeTag("Blocked");
+			}
+			
 		} else {
-			this.addTag("Blocked");
+			
+			if (!this.compareTag("Blocked")) {
+				System.out.println("Added blocked tag");
+				this.addTag("Blocked");
+			}
 		}
-		
 	}
 	
 	@Override

@@ -20,6 +20,16 @@ public class Skeleton extends Unit {
 	@Override
 	public void update(World world, int delta) {
 		
+		/* Check if the skeleton's next position
+		 * is blocked, and reverse direction if so.
+		 */
+		float testX = this.getTestX(this.getX(), this.getDirection());
+		float testY = this.getTestY(this.getY(), this.getDirection());
+		
+		if (world.isBlocked(testX, testY)) {
+			this.reverseDirection();
+		}
+		
 		/* Update the timer. */
 		this.timer.update(delta);
 		

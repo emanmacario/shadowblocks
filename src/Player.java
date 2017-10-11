@@ -119,7 +119,6 @@ public class Player extends Unit {
             	((Pushable)block).push(this.getDirection());
             }
             	
-                
 		} else {
 			
 			this.moveToDestination(this.getDirection());

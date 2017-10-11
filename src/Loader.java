@@ -145,6 +145,10 @@ public class Loader {
 		}
 		
 		if (dSwitch != null && door != null) {
+			
+			/* We have set a door. */
+			System.out.println("Door associated with switch.");
+			
 			((Switch)dSwitch).setDoor((Door)door);
 		}
 		

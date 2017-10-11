@@ -23,17 +23,18 @@ public class World {
 	private ArrayList<Sprite> sprites;
 	private boolean playerMoved;
 	private int currentLevel;
-	private boolean explosionActive;
 	private Input input;
+	private ArrayList<Sprite> toCreate;
 		
 	
 
 	/** Creates the World object.
 	 */
 	public World() {
-		this.sprites = Loader.loadSprites("res/levels/3.lvl");
+		this.sprites = Loader.loadSprites("res/levels/2.lvl");
+		this.toCreate = new ArrayList<>();
 		this.playerMoved = false;
-		this.currentLevel = 3;
+		this.currentLevel = 2;
 	}
 	
 	
@@ -44,6 +45,7 @@ public class World {
 	 */
 	public void restartLevel() {
 		this.sprites = Loader.loadSprites("res/levels/" + currentLevel + ".lvl");
+		this.toCreate = new ArrayList<>();
 	}
 	
 	
@@ -199,17 +201,13 @@ public class World {
 			
 			/* Update the sprite. */
 			sprite.update(this, delta);
-			
-			
-			/* Check if an update to a sprite
-			 * causes concurrent modification
-			 * of the sprite list.
-			 */
-			if (explosionActive) {
-				explosionActive = false;
-				break;
-			}
 		}
+		
+		/* Check if we need to create any sprites,
+		 * and if so create them!
+		 */
+		sprites.addAll(toCreate);
+		toCreate.clear();
 	}
 	
 	
@@ -315,7 +313,7 @@ public class World {
 	 * @return void
 	 */
 	public void createSprite(Sprite sprite) {
-		this.sprites.add(sprite);
+		this.toCreate.add(sprite);
 	}
 	
 	/** Takes a sprite and 'destroys' it, or in other
