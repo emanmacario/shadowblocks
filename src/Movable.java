@@ -47,41 +47,26 @@ public abstract class Movable extends Sprite {
 		}
 		/* Now, actually move. */
 		onMove(direction, this.getX() + deltaX, this.getY() + deltaY);
-
 	}
 	
-		
-	/** Moves sprite in a given direction, with a 
-	 * displacement of the input speed.
+	
+	/** When a call to moveToDestination is made, convert the data
+	 * and execute the move.
 	 * 
 	 * @param direction
-	 * @return void
+	 * @param testX
+	 * @param testY
 	 */
-	public void moveToDestination(int direction, float speed) {
-		float deltaX = 0, deltaY = 0;
+	public void onMove(int direction, float testX, float testY) {
 		
-		/* Translate the direction into x and y displacement. */
-		switch (direction) {
-			case DIR_LEFT:
-				deltaX = -speed;
-				break;
-			case DIR_RIGHT:
-				deltaX = speed;
-				break;
-			case DIR_UP:
-				deltaY = -speed;
-				break;
-			case DIR_DOWN:
-				deltaY = speed;
-				break;
-			default:
-				break;
-		}
-		/* Now, actually move. */
-		onMove(direction, this.getX() + deltaX, this.getY() + deltaY);
+		/* Add the original position to history. */
+		this.addToHistory(this.getX(), this.getY());
+		
+		/* Move to the new destination. */
+		this.setX(testX);
+		this.setY(testY);
 	}
-	
-	
+		
 	
 	/** Returns a pixel coordinate based on the direction
 	 * of movement.
@@ -115,25 +100,7 @@ public abstract class Movable extends Sprite {
 	}
 	
 	
-	
-	/** When a call to moveToDestination is made, convert the data
-	 * and execute the move.
-	 * 
-	 * @param direction
-	 * @param testX
-	 * @param testY
-	 */
-	public void onMove(int direction, float testX, float testY) {
 		
-		/* Add the original position to history. */
-		this.addToHistory(this.getX(), this.getY());
-		
-		/* Move to the new destination. */
-		this.setX(testX);
-		this.setY(testY);
-	}
-	
-	
 	/** Returns true if a movable object has a 
 	 * movement history.
 	 * 
