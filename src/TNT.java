@@ -15,6 +15,13 @@ public class TNT extends Pushable {
 		this.activated = activated;
 	}
 	
+	@Override
+	public void onMove(float newX, float newY) {
+				
+		//this.addToHistory();
+		super.onMove(newX, newY);
+	}
+	
 	
 	@Override
 	public void update(World world, int delta) {

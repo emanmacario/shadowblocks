@@ -37,9 +37,12 @@ public class Player extends Movable {
 	 * @param testX
 	 * @param testY
 	 */
-	public void onMove(int direction, float testX, float testY) {
-		super.onMove(direction, testX, testY);
+	@Override
+	public void onMove(float newX, float newY) {
+		//this.addToHistory();
 		this.moveCount++;
+		
+		super.onMove(newX, newY);
 	}
 	
 	
@@ -102,16 +105,8 @@ public class Player extends Movable {
                 
                 if (crackedWall != null && crackedWall instanceof Cracked) {
                     
-                    /* Create a new explosion sprite. 
-                     */
-                    Sprite explosion = new Explosion(blockX, blockY);
-                    
-                    /* Destroy the cracked wall and TNT block, and
-                     * add the explosion sprite to the sprite list.
-                     */
-                    world.destroySprite(crackedWall);
-                    world.destroySprite(block);
-                    world.createSprite(explosion);
+                	((TNT)block).setActivated(true);
+              
                 }
                     
             } else if (!world.isBlocked(blockX, blockY)) {

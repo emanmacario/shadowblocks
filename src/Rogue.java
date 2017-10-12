@@ -10,10 +10,6 @@ public class Rogue extends Movable {
 		this.addTag("Enemy");
 	}
 	
-	@Override
-	public void onMove(int direction, float testX, float testY) {
-		super.onMove(direction, testX, testY);
-	}
 	
 	@Override
 	public void update(World world, int delta) {

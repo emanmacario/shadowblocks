@@ -45,26 +45,27 @@ public abstract class Movable extends Sprite {
 			case DIR_NONE:
 				break;
 		}
-		/* Now, actually move. */
-		onMove(direction, this.getX() + deltaX, this.getY() + deltaY);
+		
+		/* Perform any other required actions 
+		 * specific to the sprite currently moving.
+		 */
+		onMove(this.getX() + deltaX, this.getY() + deltaY);
 	}
 	
 	
 	/** When a call to moveToDestination is made, convert the data
 	 * and execute the move.
 	 * 
-	 * @param direction
-	 * @param testX
-	 * @param testY
+	 * @param newX
+	 * @param newY
+	 * @return void
 	 */
-	public void onMove(int direction, float testX, float testY) {
+	public void onMove(float newX, float newY) {
 		
-		/* Add the original position to history. */
-		this.addToHistory(this.getX(), this.getY());
-		
-		/* Move to the new destination. */
-		this.setX(testX);
-		this.setY(testY);
+		/* Move to the new destination. 
+		 */
+		this.setX(newX);
+		this.setY(newY);
 	}
 		
 	
@@ -115,8 +116,8 @@ public abstract class Movable extends Sprite {
 	
 	
 	/** Adds a move to the move history. */
-	public void addToHistory(float x, float y) {
-		this.history.push(x, y);
+	public void addToHistory() {
+		this.history.push(this.getX(), this.getY());
 		
 	}
 	
@@ -141,5 +142,10 @@ public abstract class Movable extends Sprite {
 	/** Returns the size of the stack. */
 	public int getStackSize() {
 		return this.history.getStackSize();
+	}
+	
+	
+	public HistoryStack getHistory() {
+		return this.history;
 	}
 }

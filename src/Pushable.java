@@ -17,8 +17,4 @@ public abstract class Pushable extends Movable {
 	public void push(int direction) {
 		moveToDestination(direction);
 	}
-	
-	public boolean active() {
-		return false;
-	}
 }

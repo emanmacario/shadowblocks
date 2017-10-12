@@ -9,7 +9,6 @@ public class Switch extends Sprite {
 		this.door = null;
 	}
 	
-	
 	public void setDoor(Door door) {
 		this.door = door;
 	}
@@ -17,25 +16,20 @@ public class Switch extends Sprite {
 	@Override
 	public void update(World world, int delta) {
 		
-		/* Check if there is a block on
-		 * the door switch.
+		/* Check if there is a block
+		 * currently on the door switch.
 		 */
 		Sprite block = world.getSpriteOfType("Block", 
 								this.getX(), this.getY());
 		
 		/* Open the door if so, otherwise
-		 * door remains shut.
+		 * close the door if it is not already
+		 * closed.
 		 */
 		if (block != null) {
-			
-			//System.out.println("Open door");
-			
 			door.setClosed(false);
 		} else {
-			
-			//System.out.println("Close door");
 			door.setClosed(true);
 		}
 	}
-	
 }

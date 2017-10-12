@@ -26,13 +26,6 @@ public class Target extends Sprite {
 	}
 	
 	public void setActivated(boolean activated) {
-		
-		/* Debug statement. */
-		if (activated) {
-			//System.out.println("You activated a target!");
-		} else {
-			//System.out.println("You deactivated a target!");
-		}
 		this.activated = activated;
 	}
 	

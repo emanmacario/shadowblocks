@@ -10,18 +10,32 @@ public class Ice extends Pushable {
 	public Ice(float x, float y) {
 		super("res/ice.png", x, y);
 		this.active = false;
-		//this.timer = new Timer(250);
+		this.direction = DIR_NONE;
+		this.lastX = getX();
+		this.lastY = getY();
 		this.addTag("Block");
 		this.addTag("Blocked");
 	}
 	
+	
 	@Override
 	public void push(int direction) {
+		this.lastX = this.getX();
+		this.lastY = this.getY();
 		this.active = true;
 		this.direction = direction;
 		this.timer = new Timer(250);
-		moveToDestination(direction, App.TILE_SIZE);
+		this.moveToDestination(direction);
 	}
+	
+	
+	@Override
+	public void addToHistory() {
+		HistoryStack history = this.getHistory();
+		
+		history.push(lastX, lastY);
+	}
+	
 	
 	@Override
 	public void update(World world, int delta) {
@@ -46,10 +60,5 @@ public class Ice extends Pushable {
 				
 			}
 		}
-	}
-	
-	
-	public void setDirection(int direction) {
-		this.direction = direction;
 	}
 }
