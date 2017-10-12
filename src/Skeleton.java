@@ -21,6 +21,10 @@ public class Skeleton extends Movable {
 	@Override
 	public void update(World world, int delta) {
 		
+		/* Update the timer. */
+		this.timer.update(delta);
+		
+		
 		/* Check if the skeleton's next position
 		 * is blocked, and reverse direction if so.
 		 */
@@ -29,12 +33,20 @@ public class Skeleton extends Movable {
 		
 		if (world.isBlocked(testX, testY)) {
 			this.reverseDirection();
+			
+			/* Test that the reverse direction is not blocked 
+			 * as well. If it is, then the skeleton is trapped.
+			 */
+			testX = getTestX(getX(), direction);
+			testY = getTestY(getY(), direction);
+			
+			if (world.isBlocked(testX, testY)) {
+				timer.reset();
+			}
 		}
 		
-		/* Update the timer. */
-		this.timer.update(delta);
-		
-		/* Reset the timer if it expires. */
+		/* Reset the timer if it expires. 
+		 */
 		if (timer.expired()) {
 			this.moveToDestination(this.direction);
 			timer.reset();
