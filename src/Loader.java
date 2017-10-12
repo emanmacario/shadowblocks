@@ -125,40 +125,25 @@ public class Loader {
 		
 		// Associate the door and switch if they exist in a level.
 		Sprite door = null;
-		Sprite dSwitch = null;
+		Sprite doorSwitch = null;
 		
-		// Make skeleton after player
-		Sprite player = null;
-		Sprite skeleton = null;
-		
+
 		for (Sprite sprite : spriteList) {
 			
 			if (sprite instanceof Switch) {
-				dSwitch = sprite;
+				doorSwitch = sprite;
 			} else if (sprite instanceof Door) {
 				door = sprite;
-			} else if (sprite instanceof Skeleton) {
-				skeleton = sprite;
-			} else if (sprite instanceof Player) {
-				player = sprite;
 			}
 		}
 		
-		if (dSwitch != null && door != null) {
+		if (doorSwitch != null && door != null) {
 			
 			/* We have set a door. */
 			System.out.println("Door associated with switch.");
 			
-			((Switch)dSwitch).setDoor((Door)door);
+			((Switch)doorSwitch).setDoor((Door)door);
 		}
-		
-		/*
-		if (skeleton != null) {
-			spriteList.remove(skeleton);
-			spriteList.remove(player);
-			spriteList.add(player);
-			spriteList.add(skeleton);
-		}*/
 		
 		return spriteList;
 	}
