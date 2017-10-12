@@ -1,10 +1,12 @@
 
 
-public class Rogue extends Unit {
+public class Rogue extends Movable {
+	
+	private int direction;
 	
 	public Rogue(float x, float y) {
-		super("res/rogue.png", x, y, DIR_LEFT);
-		this.addTag("Unit");
+		super("res/rogue.png", x, y);
+		this.direction = DIR_LEFT;
 		this.addTag("Enemy");
 	}
 	
@@ -24,41 +26,39 @@ public class Rogue extends Unit {
 		}
 		
 		/* Get new candidate position. */
-		float testX = getTestX(this.getX(), this.getDirection());
-		float testY = getTestY(this.getY(), this.getDirection());
+		float testX = getTestX(this.getX(), this.direction);
+		float testY = getTestY(this.getY(), this.direction);
 		
-		
-		/* Debug statements.
-		System.out.println("Rogue direction: " + this.getDirection());
-		System.out.println("old x: " + getX() + " old y: "+ getY());
-		System.out.println("new x: " + testX + " new y: " + testY);
-		*/
 		
 		/* Get adjacent position of candidate position,
 		 * in the respective direction. 
 		 */
-		float blockX = getTestX(testX, this.getDirection());
-		float blockY = getTestY(testY, this.getDirection());
+		float blockX = getTestX(testX, this.direction);
+		float blockY = getTestY(testY, this.direction);
 		
 		/* Either move, move/push a block, or reverse direction. */
 		if (world.isBlocked(testX, testY)) {
-			
-			System.out.println("Rogue is blocked");
-			
+						
 			Sprite block = world.getSpriteOfType("Block", testX, testY);
            
             if (block == null) {
+            	
                 this.reverseDirection();
+                
             } else if (world.isBlocked(blockX, blockY)) {
+            	
                 this.reverseDirection();
+                
             } else {
-            	this.moveToDestination(this.getDirection());
-            	((Pushable)block).push(this.getDirection());
+            	
+            	this.moveToDestination(this.direction);
+            	((Pushable)block).push(this.direction);
+            	
             }
             
 		} else {
 			
-			this.moveToDestination(this.getDirection());
+			this.moveToDestination(this.direction);
 		}
 	}
 	
@@ -66,15 +66,15 @@ public class Rogue extends Unit {
 	/* If the Rogue was blocked and could not 
 	 * move, reverse its current direction.
 	 */
-	public void reverseDirection() {
+	private void reverseDirection() {
 		
-		if (this.getDirection() == DIR_LEFT) {
+		if (this.direction == DIR_LEFT) {
 			
-			this.setDirection(DIR_RIGHT);
+			this.direction = DIR_RIGHT;
 			
 		} else {
 			
-			this.setDirection(DIR_LEFT);
+			this.direction = DIR_LEFT;
 		}
 	}
 }

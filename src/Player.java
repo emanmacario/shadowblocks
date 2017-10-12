@@ -12,8 +12,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
-public class Player extends Unit {
+public class Player extends Movable {
 	
+	private int direction;
 	private int moveCount;
 	
 	/** 
@@ -23,9 +24,9 @@ public class Player extends Unit {
 	 * @param y    The x-coordinate of the sprite, in pixels.
 	 */
 	public Player(float x, float y) {
-		super("res/player.png", x, y, DIR_NONE);
+		super("res/player.png", x, y);
+		this.direction = DIR_NONE;
 		this.moveCount = 0;
-		this.addTag("Unit");
 		this.addTag("Player");
 	}
 	
@@ -66,10 +67,10 @@ public class Player extends Unit {
 		Input input = world.getInput();
 		
 		/* Set the player direction. */
-		this.setDirection(inputToDirection(input));
+		this.direction = inputToDirection(input);
 		
 		/* Relay if a player has moved. */
-		if (this.getDirection() != DIR_NONE) {
+		if (this.direction != DIR_NONE) {
 			
 			world.setPlayerMoved(true);
 			
@@ -80,11 +81,11 @@ public class Player extends Unit {
 		}
 		
 		/* Get new candidate position. */
-		float testX = getTestX(this.getX(), this.getDirection());
-		float testY = getTestY(this.getY(), this.getDirection());
+		float testX = getTestX(this.getX(), this.direction);
+		float testY = getTestY(this.getY(), this.direction);
 		
-		float blockX = getTestX(testX, this.getDirection());
-		float blockY = getTestY(testY, this.getDirection());
+		float blockX = getTestX(testX, this.direction);
+		float blockY = getTestY(testY, this.direction);
 		
 		
 		if (world.isBlocked(testX, testY)) {
@@ -115,13 +116,13 @@ public class Player extends Unit {
                     
             } else if (!world.isBlocked(blockX, blockY)) {
             	
-            	this.moveToDestination(this.getDirection());
-            	((Pushable)block).push(this.getDirection());
+            	this.moveToDestination(this.direction);
+            	((Pushable)block).push(this.direction);
             }
             	
 		} else {
 			
-			this.moveToDestination(this.getDirection());
+			this.moveToDestination(this.direction);
 		}	
 		
 	}

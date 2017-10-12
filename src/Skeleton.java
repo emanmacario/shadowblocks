@@ -1,12 +1,13 @@
 
-public class Skeleton extends Unit {
+public class Skeleton extends Movable {
 	
+	private int direction;
 	private Timer timer;
 	
 	public Skeleton(float x, float y) {
-		super("res/skull.png", x, y, DIR_UP);
+		super("res/skull.png", x, y);
+		this.direction = DIR_UP;
 		this.timer = new Timer(1000);
-		this.addTag("Unit");
 		this.addTag("Enemy");
 	}
 		
@@ -23,8 +24,8 @@ public class Skeleton extends Unit {
 		/* Check if the skeleton's next position
 		 * is blocked, and reverse direction if so.
 		 */
-		float testX = this.getTestX(this.getX(), this.getDirection());
-		float testY = this.getTestY(this.getY(), this.getDirection());
+		float testX = this.getTestX(this.getX(), this.direction);
+		float testY = this.getTestY(this.getY(), this.direction);
 		
 		if (world.isBlocked(testX, testY)) {
 			this.reverseDirection();
@@ -35,21 +36,22 @@ public class Skeleton extends Unit {
 		
 		/* Reset the timer if it expires. */
 		if (timer.expired()) {
-			this.moveToDestination(this.getDirection());
+			this.moveToDestination(this.direction);
 			timer.reset();
 		}
 	}
 	
 	
 	/* If the Skeleton was blocked and could not 
-	 * move, reverse its current direction.
+	 * move, reverse its current direction, and
+	 * reset its movement interval timer.
 	 */
-	public void reverseDirection() {
+	private void reverseDirection() {
 		
-		if (this.getDirection() == DIR_UP) {
-			this.setDirection(DIR_DOWN);
+		if (this.direction == DIR_UP) {
+			this.direction = DIR_DOWN;
 		} else {
-			this.setDirection(DIR_UP);
+			this.direction = DIR_UP;
 		}
 		timer.reset();
 	}
