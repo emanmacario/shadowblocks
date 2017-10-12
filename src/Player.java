@@ -114,6 +114,11 @@ public class Player extends Movable {
             	
             	this.moveToDestination(this.direction);
             	((Pushable)block).push(this.direction);
+            	
+            } else {
+            	
+            	this.moveToDestination(DIR_NONE);
+            	
             }
             	
 		} else {
