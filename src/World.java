@@ -20,20 +20,22 @@ public class World {
 	 * World attributes.
 	 */
 	private ArrayList<Sprite> sprites;
+	private ArrayList<Sprite> spritesToCreate;
+	private ArrayList<Sprite> spritesToDestroy;
 	private boolean playerMoved;
 	private int currentLevel;
 	private Input input;
-	private ArrayList<Sprite> toCreate;
-		
 	
 
-	/** Creates the World object.
+	/** 
+	 * Creates the World object.
 	 */
 	public World() {
-		this.sprites = Loader.loadSprites("res/levels/0.lvl");
-		this.toCreate = new ArrayList<>();
+		this.sprites = Loader.loadSprites("res/levels/1.lvl");
+		this.spritesToCreate = new ArrayList<>();
+		this.spritesToDestroy = new ArrayList<>();
 		this.playerMoved = false;
-		this.currentLevel = 0;
+		this.currentLevel = 1;
 	}
 	
 	
@@ -44,7 +46,8 @@ public class World {
 	 */
 	public void restartLevel() {
 		this.sprites = Loader.loadSprites("res/levels/" + currentLevel + ".lvl");
-		this.toCreate = new ArrayList<>();
+		this.spritesToCreate.clear();
+		this.spritesToDestroy.clear();
 	}
 	
 	
@@ -54,9 +57,9 @@ public class World {
 	 * @param void
 	 * @return null
 	 */
-	public boolean isLevelOver() {
+	private boolean isLevelOver() {
 		
-		if (this.currentLevel == 5) {
+		if (currentLevel == 5) {
 			return false;
 		}
 		
@@ -72,7 +75,7 @@ public class World {
 				}
 			}
 		}
-		this.currentLevel++;
+		currentLevel++;
 		return true;
 	}
 	
@@ -190,7 +193,6 @@ public class World {
 		}
 		
 		
-		
 		for (Sprite sprite : sprites) {
 			
 			/* Check for null. */
@@ -205,8 +207,14 @@ public class World {
 		/* Check if we need to create any sprites,
 		 * (namely explosions) and if so create them!
 		 */
-		sprites.addAll(toCreate);
-		toCreate.clear();
+		sprites.addAll(spritesToCreate);
+		spritesToCreate.clear();
+		
+		/* Check if we need to destroy any sprites,
+		 * and if so destroy them!.
+		 */
+		sprites.removeAll(spritesToDestroy);
+		spritesToDestroy.clear();
 	}
 	
 	
@@ -252,15 +260,6 @@ public class World {
 	
 	public void updateMovableHistory() {
 		
-		int maxSize = getMaxSize();
-		
-		for (Sprite sprite : sprites) {
-			if (sprite instanceof Movable &&
-					((Movable)sprite).getStackSize() < maxSize) {
-				
-				((Movable)sprite).addToHistory(sprite.getX(), sprite.getY());	
-			}
-		}
 	}
 	
 		
@@ -271,8 +270,9 @@ public class World {
 	 * @return void
 	 */
 	public void createSprite(Sprite sprite) {
-		this.toCreate.add(sprite);
+		this.spritesToCreate.add(sprite);
 	}
+	
 	
 	/** Takes a sprite and 'destroys' it, or in other
 	 * words removes it from the world's sprite list.
@@ -281,12 +281,13 @@ public class World {
 	 * @return void
 	 */
 	public void destroySprite(Sprite sprite) {
-		this.sprites.remove(sprite);
+		this.spritesToDestroy.add(sprite);
 	}
 	
 	
 	
-	/* Bunch of getters/setters. */
+	/* Bunch of getters/setters. 
+	 */
 	
 	public void setPlayerMoved(boolean playerMoved) {
 		this.playerMoved = playerMoved;
