@@ -76,6 +76,7 @@ public class Player extends Movable {
 		if (this.direction != DIR_NONE) {
 			
 			world.setPlayerMoved(true);
+			world.updateMovableHistory();
 			
 		} else {
 			

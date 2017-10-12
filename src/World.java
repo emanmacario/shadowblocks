@@ -31,11 +31,11 @@ public class World {
 	 * Creates the World object.
 	 */
 	public World() {
-		this.sprites = Loader.loadSprites("res/levels/2.lvl");
+		this.sprites = Loader.loadSprites("res/levels/0.lvl");
 		this.spritesToCreate = new ArrayList<>();
 		this.spritesToDestroy = new ArrayList<>();
 		this.playerMoved = false;
-		this.currentLevel = 2;
+		this.currentLevel = 0;
 	}
 	
 	
@@ -258,7 +258,7 @@ public class World {
 	}
 	
 	
-	private void updateMovableHistory() {
+	public void updateMovableHistory() {
 		
 		for (Sprite sprite : sprites) {
 			if (sprite.compareTag("Block") || sprite.compareTag("Player")) {

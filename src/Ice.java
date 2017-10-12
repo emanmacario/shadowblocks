@@ -28,6 +28,12 @@ public class Ice extends Pushable {
 		this.moveToDestination(direction);
 	}
 	
+	@Override
+	public void undo() {
+		super.undo();
+		this.active = false;
+	}
+	
 	
 	@Override
 	public void addToHistory() {
@@ -56,6 +62,8 @@ public class Ice extends Pushable {
 					this.timer.reset();
 				} else {
 					this.active = false;
+					this.lastX = this.getX();
+					this.lastY = this.getY();
 				}
 				
 			}
