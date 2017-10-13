@@ -1,5 +1,17 @@
+/* SWEN20003 Object Oriented Software Development
+ * Project 2 - Shadow Blocks
+ * 
+ * Author: Emmanuel Macario <macarioe>
+ * Student Number: 831659
+ * Email: macarioe@student.unimelb.edu.au
+ * 
+ * This file contains the Door class, which
+ * can be opened and closed, allowing Movable
+ * objects to be blocked.
+ */
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+
 
 public class Door extends Sprite {
 	

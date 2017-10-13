@@ -1,10 +1,17 @@
-/** This file contains the HistoryStack class
+/* SWEN20003 Object Oriented Software Development
+ * Project 2 - Shadow Blocks
+ * 
+ * Author: Emmanuel Macario <macarioe>
+ * Student Number: 831659
+ * Email: macarioe@student.unimelb.edu.au
+ * 
+ * This file contains the HistoryStack class
  * which contains the move history of a movable
  * object.
  */
-
 import java.util.Stack;
 import org.newdawn.slick.geom.Vector2f;
+
 
 public class HistoryStack {
 	

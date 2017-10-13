@@ -1,4 +1,13 @@
-
+/* SWEN20003 Object Oriented Software Development
+ * Project 2 - Shadow Blocks
+ * 
+ * Author: Emmanuel Macario <macarioe>
+ * Student Number: 831659
+ * Email: macarioe@student.unimelb.edu.au
+ * 
+ * This file contains the Switch class, responsible
+ * for opening/closing an associated door.
+ */
 
 public class Switch extends Sprite {
 	

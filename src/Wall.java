@@ -1,4 +1,5 @@
 /* SWEN20003 Object Oriented Software Development
+ * Project 2 - Shadow Blocks
  * 
  * Author: Emmanuel Macario <macarioe>
  * Student Number: 831659

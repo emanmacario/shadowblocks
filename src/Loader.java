@@ -1,4 +1,5 @@
 /* SWEN20003 Object Oriented Software Development
+ * Project 2 - Shadow Blocks
  * 
  * Author: Emmanuel Macario <macarioe>
  * Student Number: 831659
@@ -7,7 +8,6 @@
  * This file contains the Loader class, which is a static class
  * responsible for loading the map from the CSV level file.
  */
-
 import java.util.Scanner;
 import java.io.FileReader;
 import java.io.IOException;

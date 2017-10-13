@@ -1,11 +1,11 @@
 /* SWEN20003 Object Oriented Software Development
+ * Project 2 - Shadow Blocks
  * 
  * Author: Emmanuel Macario <macarioe>
  * Student Number: 831659
  * Email: macarioe@student.unimelb.edu.au
  * 
- * This file contains the Player class, which controls
- * movement of the player in the program.
+ * This file contains the Player class.
  */
 
 import org.newdawn.slick.Graphics;

@@ -1,11 +1,12 @@
 /* SWEN20003 Object Oriented Software Development
+ * Project 2 - Shadow Blocks
  * 
  * Author: Emmanuel Macario <macarioe>
  * Student Number: 831659
  * Email: macarioe@student.unimelb.edu.au
  * 
- * This file contains the World class, which represents
- * the entire game world.
+ * This file contains the World class, which 
+ * represents the entire game world.
  */
 
 import org.newdawn.slick.Graphics;
@@ -125,7 +126,7 @@ public class World {
 	
 	/** Finds the first sprite that matches a given tag.
 	 * 
-	 * @param tag      The tag a sprite possesses.
+	 * @param tag The tag a sprite possesses.
 	 * @return sprite
 	 */
 	public Sprite getSpriteOfType(String tag) {
@@ -170,7 +171,6 @@ public class World {
 		if (input.isKeyPressed(Input.KEY_Z)) {
 			undoMovables();
 		}
-		
 		
 		/* Now, update all the current sprites.
 		 */

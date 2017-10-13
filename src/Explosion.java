@@ -1,4 +1,13 @@
-
+/* SWEN20003 Object Oriented Software Development
+ * Project 2 - Shadow Blocks
+ * 
+ * Author: Emmanuel Macario <macarioe>
+ * Student Number: 831659
+ * Email: macarioe@student.unimelb.edu.au
+ * 
+ * This file contains the World class, which represents
+ * the entire game world.
+ */
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 

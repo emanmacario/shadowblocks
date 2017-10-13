@@ -8,6 +8,7 @@
  * a game object which can be pushed by a Unit.
  */
 
+
 public abstract class Pushable extends Movable {
 	
 	/** Creates a new Pushable object.

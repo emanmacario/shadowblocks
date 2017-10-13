@@ -4,11 +4,8 @@
  * Student Number: 831659
  * Email: macarioe@student.unimelb.edu.au
  * 
- * This file contains the Stone class.
- * 
- * Note: This class has been implemented now for
- * the purpose of any possible extensions for 
- * Project 2.
+ * This file contains the Stone class, which is
+ * a block that can be pushed by units.
  */
 
 

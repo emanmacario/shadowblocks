@@ -1,3 +1,14 @@
+/* SWEN20003 Object Oriented Software Development
+ * Project 2 - Shadow Blocks
+ * 
+ * Author: Emmanuel Macario <macarioe>
+ * Student Number: 831659
+ * Email: macarioe@student.unimelb.edu.au
+ * 
+ * This file contains the Ice class, which represents
+ * a block that can be pushed by units.
+ */
+
 
 public class Ice extends Pushable {
 	

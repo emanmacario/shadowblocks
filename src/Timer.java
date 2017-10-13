@@ -1,13 +1,15 @@
 /* SWEN20003 Object Oriented Software Development
+ * Project 2 - Shadow Blocks
  * 
  * Author: Emmanuel Macario <macarioe>
  * Student Number: 831659
  * Email: macarioe@student.unimelb.edu.au
  * 
  * This file contains the Timer class, used
- * for timing movement interval and effect time.
- * 
+ * for timing movement intervals and effects time.
  */
+
+
 public class Timer {
 	
 	/** Timer attributes.
