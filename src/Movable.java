@@ -4,13 +4,17 @@ import org.newdawn.slick.geom.Vector2f;
 public abstract class Movable extends Sprite {
 	
 	
-	/** Instance variables.
+	/** Movable object attributes.
 	 */
 	private HistoryStack history;
 	
 	
-	/** 
-	 * Creates a Movable object.
+	/** Creates a new Movable object, with 
+	 * an empty movement history.
+	 * 
+	 * @param imageSource The relative path to the sprite's image.
+	 * @param x           The sprite's x-coordinate, in pixels.
+	 * @param y           The sprite's y-coordinate, in pixels.
 	 */
 	public Movable(String imageSource, float x, float y) {
 		super(imageSource, x, y);
@@ -28,7 +32,8 @@ public abstract class Movable extends Sprite {
 		
 		float deltaX = 0, deltaY = 0;
 		
-		/* Translate the direction into x and y displacement. */
+		/* Translate the direction into x and y displacement. 
+		 */
 		switch (direction) {
 			case DIR_LEFT:
 				deltaX = -App.TILE_SIZE;
@@ -69,12 +74,12 @@ public abstract class Movable extends Sprite {
 	}
 		
 	
-	/** Returns a pixel coordinate based on the direction
-	 * of movement.
+	/** Returns a candidate x-coordinate, in pixel units,
+	 * based on the direction of movement.
 	 * 
-	 * @param x
-	 * @param direction
-	 * @return position
+	 * @param x          Current x-coordinate
+	 * @param direction  The direction of movement
+	 * @return The new x-coordinate.
 	 */
 	public float getTestX(float x, int direction) {
 		switch (direction) {
@@ -84,11 +89,17 @@ public abstract class Movable extends Sprite {
 				return x + App.TILE_SIZE;
 			default:
 				return x;
-			
 		}
 	}
 	
 	
+	/** Returns a candidate y-coordinate, in pixel units,
+	 * based on the direction of movement.
+	 * 
+	 * @param y          Current y-coordinate
+	 * @param direction  The direction of movement
+	 * @return The new y-coordinate.
+	 */
 	public float getTestY(float y, int direction) {
 		switch(direction) {
 			case DIR_UP:
@@ -105,7 +116,7 @@ public abstract class Movable extends Sprite {
 	/** Returns true if a movable object has a 
 	 * movement history.
 	 * 
-	 * @return
+	 * @return True if yes, else false.
 	 */
 	public boolean hasHistory() {
 		if (this.history.getStackSize() > 0) {
@@ -115,9 +126,13 @@ public abstract class Movable extends Sprite {
 	}
 	
 	
-	/** Adds a move to the move history. */
+	/** Adds a move to the movement history. 
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public void addToHistory() {
-		this.history.push(this.getX(), this.getY());
+		history.push(getX(), getY());
 		
 	}
 	
@@ -128,23 +143,35 @@ public abstract class Movable extends Sprite {
 	 */
 	public void undo() {
 		
-		/* First, check if the sprite has a move history. */
+		/* First, check if the sprite has a move history. 
+		 */
 		if (this.hasHistory()) {
 			
-			/* Get the most previous move, and undo it. */
-			Vector2f move = this.history.pop();
-			
+			/* Get the most previous move, and undo it. 
+			 */
+			Vector2f move = history.pop();
 			this.setX(move.getX());
 			this.setY(move.getY());
 		}
 	}
 	
-	/** Returns the size of the stack. */
+	
+	/** Returns the size of the stack
+	 * containing all movement history.
+	 * 
+	 *  @param void
+	 *  @return size
+	 */
 	public int getStackSize() {
 		return this.history.getStackSize();
 	}
 	
 	
+	/** Returns the move history of
+	 * a Movable object.
+	 * 
+	 * @return history
+	 */
 	public HistoryStack getHistory() {
 		return this.history;
 	}

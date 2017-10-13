@@ -14,14 +14,16 @@ import org.newdawn.slick.SlickException;
 
 public class Player extends Movable {
 	
+	/** Player attributes.
+	 */
 	private int direction;
 	private int moveCount;
 	
-	/** 
-	 * Creates the Player object.
+	
+	/** Creates the Player object.
 	 * 
-	 * @param x    The x-coordinate of the sprite, in pixels.
-	 * @param y    The x-coordinate of the sprite, in pixels.
+	 * @param x  The x-coordinate of the sprite, in pixels.
+	 * @param y  The x-coordinate of the sprite, in pixels.
 	 */
 	public Player(float x, float y) {
 		super("res/player.png", x, y);
@@ -39,7 +41,6 @@ public class Player extends Movable {
 	 */
 	@Override
 	public void onMove(float newX, float newY) {
-		//this.addToHistory();
 		this.moveCount++;
 		
 		super.onMove(newX, newY);
@@ -61,25 +62,32 @@ public class Player extends Movable {
 	@Override
 	public void update(World world, int delta) {
 		
-		/* Firstly check if the player is dead. */
+		/* Firstly check if the player is 'dead'. 
+		 */
 		if (isPlayerDead(world)) {
 			world.restartLevel();
 		}
 		
-		/* Get the direction. */
+		/* Get the direction, and set it. 
+		 */
 		Input input = world.getInput();
-		
-		/* Set the player direction. */
 		this.direction = inputToDirection(input);
 		
-		/* Relay if a player has moved. */
+		
+		/* Relay if a player has moved. 
+		 */
 		if (this.direction != DIR_NONE) {
 			
+			/* If yes, update the history of
+			 * movable objects.
+			 */
 			world.setPlayerMoved(true);
 			world.updateMovableHistory();
 			
 		} else {
 			
+			/* Otherwise, nothing to do.
+			 */
 			world.setPlayerMoved(false);
 			return;
 		}
@@ -129,7 +137,7 @@ public class Player extends Movable {
 	}
 	
 		
-	/** Translates an input on the keyboard, to
+	/** Translates a key input on the keyboard, to
 	 * an in-game direction.
 	 * 
 	 * @param input
@@ -161,8 +169,8 @@ public class Player extends Movable {
 	/** Checks if a player is 'dead', by checking
 	 * if the player shares a position with an 'Enemy'.
 	 * 
-	 * @param world
-	 * @return boolean
+	 * @param world  The world the player sprite belongs to.
+	 * @return True if player is dead, else false.
 	 */
 	private boolean isPlayerDead(World world) {
 		
@@ -175,7 +183,9 @@ public class Player extends Movable {
 	}
 	
 	
-	/** 
+	/** In addition to rendering the sprite, 
+	 * also renders the player's current move count. 
+	 * 
 	 * @param g  The Slick graphics container object.
 	 * @throws SlickException
 	 * @return void
@@ -184,7 +194,8 @@ public class Player extends Movable {
 	public void render(Graphics g) throws SlickException {
 		super.render(g);
 		
-		/* Display current number of moves. */
+		/* Display current number of moves. 
+		 */
 		g.drawString("Moves: " + moveCount, 0, 0);
 	}
 }

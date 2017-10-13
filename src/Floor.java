@@ -10,11 +10,12 @@
 
 public class Floor extends Sprite {
 	
-	/** 
-	 * Creates the Floor object.
+	/** Creates a new Floor sprite.
+	 * 
+	 * @param x  The sprite's x-coordinate, in pixels.
+	 * @param y  The sprite's y-coordinate, in pixels.
 	 */
 	public Floor(float x, float y) {
 		super("res/floor.png", x, y);
 	}
-
 }

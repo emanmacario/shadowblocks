@@ -9,27 +9,40 @@
  */
 
 public class Target extends Sprite {
-		
+	
+	/** Target attributes.
+	 */
 	private boolean activated;
+	
 
-	/** 
-	 * Creates the Target object.
+	/** Creates a new Target sprite.
+	 * 
+	 * @param x  The sprite's x-coordinate, in pixels.
+	 * @param y  The sprite's y-coordinate, in pixels.
 	 */
 	public Target(float x, float y) {
 		super("res/target.png", x, y);
 		this.activated = false;
-		this.addTag("Target");
 	}
 	
+	
+	/** Returns whether a target is activated.
+	 * 
+	 * @param void
+	 * @return True if activated, else false.
+	 */
 	public boolean getActivated() {
 		return this.activated;
 	}
 	
-	public void setActivated(boolean activated) {
-		this.activated = activated;
-	}
 	
-	
+	/** Updates whether a target is activated, by
+	 * checking if there is a block currently on
+	 * the target.
+	 * 
+	 * @param world  The world object the target belongs to.
+	 * @param delta  Time passed since last frame (milliseconds).
+	 */
 	@Override
 	public void update(World world, int delta) {
 		
@@ -37,12 +50,9 @@ public class Target extends Sprite {
 										this.getX(), this.getY());
 		
 		if (block != null) {
-			this.setActivated(true);
+			this.activated = true;
 		} else {
-			this.setActivated(false);
+			this.activated = false;
 		}
-		
 	}
-	
-
 }

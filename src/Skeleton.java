@@ -1,9 +1,18 @@
 
 public class Skeleton extends Movable {
 	
+	/** Skeleton attributes.
+	 */
 	private int direction;
 	private Timer timer;
 	
+	
+	/** Creates a new Skeleton, with a default direction
+	 * of up, and a default movement interval of 1.0 secs.
+	 * 
+	 * @param x  The sprite's x-coordinate, in pixels.
+	 * @param y  The sprite's y-coordinate, in pixels.
+	 */
 	public Skeleton(float x, float y) {
 		super("res/skull.png", x, y);
 		this.direction = DIR_UP;
@@ -11,11 +20,19 @@ public class Skeleton extends Movable {
 		this.addTag("Enemy");
 	}
 		
-		
+	
+	/** Updates the skeleton's direction if blocked,
+	 * and moves if possible.
+	 * 
+	 * @param world  The world object the skeleton belongs to.
+	 * @param delta  Time passed since last frame (milliseconds).
+	 * @return void
+	 */
 	@Override
 	public void update(World world, int delta) {
 		
-		/* Update the timer. */
+		/* Update the timer. 
+		 */
 		this.timer.update(delta);
 		
 		
@@ -48,7 +65,7 @@ public class Skeleton extends Movable {
 	}
 	
 	
-	/* If the Skeleton was blocked and could not 
+	/** If the Skeleton was blocked and could not 
 	 * move, reverse its current direction, and
 	 * reset its movement interval timer.
 	 */

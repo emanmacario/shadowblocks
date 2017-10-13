@@ -14,8 +14,10 @@
 
 public class Stone extends Pushable {
 		
-	/** 
-	 * Creates the Stone object.
+	/** Creates a new Stone sprite.
+	 * 
+	 * @param x  The sprite's x-coordinate, in pixels.
+	 * @param y  The sprite's y-coordinate, in pixels.
 	 */
 	public Stone(float x, float y) {
 		super("res/stone.png", x, y);

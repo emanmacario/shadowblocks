@@ -16,20 +16,45 @@ import java.util.ArrayList;
 
 public class Loader {	
 	
+	/** Static Loader attributes. Used
+	 * for centring sprites during rendering
+	 * and checking bounds.
+	 */
 	private static int worldWidth;
 	private static int worldHeight;
 	private static int offsetX;
 	private static int offsetY;
 	
 	
+	/** Returns the x-coordinate, in tile units,
+	 * taking into account offset.
+	 * 
+	 * @param x  x-coordinate, in pixels.
+	 * @return tileX
+	 */
 	public static int getTileX(float x) {
 		return (int)(x - offsetX)/App.TILE_SIZE;
 	}
 	
+	
+	/** Returns the y-coordinate, in tile units,
+	 * taking into account offset.
+	 * 
+	 * @param y  y-coordinate, in pixels.
+	 * @return tileY
+	 */
 	public static int getTileY(float y) {
 		return (int)(y - offsetY)/App.TILE_SIZE;
 	}
 	
+	
+	/** Returns whether a given (x,y) coordinate, in 
+	 * tile units is within the map boundaries.
+	 * 
+	 * @param tileX
+	 * @param tileY
+	 * @return True if in bounds else false.
+	 */
 	public static boolean inBounds(int tileX, int tileY) {
 		if (tileX < 0 || tileX >= worldWidth ||
 			tileY < 0 || tileY >= worldHeight) {
@@ -38,12 +63,12 @@ public class Loader {
 		return true;
 	}
 	
-	/**
-	 * Create the appropriate sprite given a name and location.
-	 * @param type  The name of the sprite
-	 * @param x		The x position
-	 * @param y		The y position
-	 * @return		The sprite object
+	/** Create a sprite given its type and location.
+	 * 
+	 * @param type  The type of the sprite.
+	 * @param x		The x-coordinate, in pixel units.
+	 * @param y		The y-coordinate, in pixel units.
+	 * @return		The sprite object.
 	 */
 	private static Sprite createSprite(String type, float x, float y) {
 		switch (type) {
@@ -78,58 +103,64 @@ public class Loader {
 	}
 	
 	
-	/**
-	 * Loads in all sprites from a given level file.
+	/** Loads in all sprites from a given level file.
 	 * 
 	 * @param filename     Name of the level file.
-	 * @return spriteList  ArrayList of Sprites.
+	 * @return spriteList  A list of sprites.
 	 */
 	public static ArrayList<Sprite> loadSprites(String filename) {
 		ArrayList<Sprite> spriteList = new ArrayList<>();
 		
-		// Open the file.
+		/* Open the file.
+		 */
 		try (Scanner scanner = new Scanner(new FileReader(filename))) {
+			
 			String[] data;
 			
-			// Find the world size.
+			/* Find the world size.
+			 */
 			data = scanner.nextLine().split(",");
 			worldWidth = Integer.parseInt(data[0]);
 			worldHeight = Integer.parseInt(data[1]);
 			
-			// Calculate the top left of the tiles so that 
-			// the level is centred.
+			/* Calculate the x and y axis offsets.
+			 */
 			offsetX = (App.SCREEN_WIDTH - worldWidth * App.TILE_SIZE) / 2;
 			offsetY = (App.SCREEN_HEIGHT - worldHeight * App.TILE_SIZE) / 2;
 			
-			// Loop over every line of the file.
+			/* Loop over every line of the file.
+			 */
 			while (scanner.hasNextLine()) {
 				String type;
 				float x, y;
 				
-				// Split the line into parts.
+				/* Split the line into parts.
+				 */
 				data = scanner.nextLine().split(",");
 				type = data[0];
 				x = Integer.parseInt(data[1]);
 				y = Integer.parseInt(data[2]);
 				
-				// Account for offset
+				/* Account for offset.
+				 */
 				x = x * App.TILE_SIZE + offsetX;
 				y = y * App.TILE_SIZE + offsetY;
 				
-				// Create sprite and add to the list.
+				/* Create sprite and add it to the list.
+				 */
 				spriteList.add(createSprite(type, x, y));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		// Associate the door and switch if they exist in a level.
+		/* Associate the door and switch sprites if 
+		 * they exist in the loaded in level.
+		 */
 		Sprite door = null;
 		Sprite doorSwitch = null;
 		
-
 		for (Sprite sprite : spriteList) {
-			
 			if (sprite instanceof Switch) {
 				doorSwitch = sprite;
 			} else if (sprite instanceof Door) {
@@ -138,16 +169,11 @@ public class Loader {
 		}
 		
 		if (doorSwitch != null && door != null) {
-			
-			/* We have set a door. */
-			System.out.println("Door associated with switch.");
-			
 			((Switch)doorSwitch).setDoor((Door)door);
 		}
 		
 		return spriteList;
 	}
-	
 }
 	
 	

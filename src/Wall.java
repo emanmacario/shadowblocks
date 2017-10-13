@@ -12,8 +12,7 @@
 
 public class Wall extends Sprite {
 	
-	/** 
-	 * Creates the Wall object.
+	/** Creates a new Wall sprite.
 	 */
 	public Wall(float x, float y) {
 		super("res/wall.png", x, y);

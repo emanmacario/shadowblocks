@@ -4,10 +4,15 @@ import org.newdawn.slick.SlickException;
 
 public class Explosion extends Sprite {
 	
+	/** Explosion attributes.
+	 */
 	private Timer timer;
 	
-	/**
-	 * Explosion constructor.
+	
+	/** Creates a new Explosion sprite.
+	 * 
+	 * @param x  The explosion's x-coordinate, in pixels.
+	 * @param y  The explosion's y-coordinate, in pixels.
 	 */
 	public Explosion(float x, float y) {
 		super("res/explosion.png", x, y);
@@ -15,27 +20,25 @@ public class Explosion extends Sprite {
 	}
 	
 	
-	/** Updates the timer.
+	/** Updates the explosion timer.
 	 * 
 	 * @param delta
 	 */
 	@Override
 	public void update(World world, int delta) {
-		this.timer.update(delta);
+		timer.update(delta);
 	}
 	
 	
-	public boolean active() {
-		if (!this.timer.expired()) {
-			return true;
-		}
-		return false;
-	}
-	
-	
-	@Override
+	/** Renders an explosion, only if the timer has
+	 * not yet expired.
+	 * 
+	 * @param g  The Slick graphics container object.
+	 * @throws SlickException
+	 * @return void
+	 */
 	public void render(Graphics g) throws SlickException {
-		if (this.timer.expired()) {
+		if (timer.expired()) {
 			return;
 		}
 		super.render(g);
