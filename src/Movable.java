@@ -51,29 +51,13 @@ public abstract class Movable extends Sprite {
 				break;
 		}
 		
-		/* Perform any other required actions 
-		 * specific to the sprite currently moving.
+		/* Set the new position.
 		 */
-		onMove(this.getX() + deltaX, this.getY() + deltaY);
+		this.setX(this.getX() + deltaX);
+		this.setY(this.getY() + deltaY);
 	}
 	
-	
-	/** When a call to moveToDestination is made, convert the data
-	 * and execute the move.
-	 * 
-	 * @param newX
-	 * @param newY
-	 * @return void
-	 */
-	public void onMove(float newX, float newY) {
-		
-		/* Move to the new destination. 
-		 */
-		this.setX(newX);
-		this.setY(newY);
-	}
-		
-	
+			
 	/** Returns a candidate x-coordinate, in pixel units,
 	 * based on the direction of movement.
 	 * 

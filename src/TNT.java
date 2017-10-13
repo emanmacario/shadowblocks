@@ -28,14 +28,7 @@ public class TNT extends Pushable {
 		this.activated = activated;
 	}
 	
-	
-	@Override
-	public void onMove(float newX, float newY) {
-				
-		super.onMove(newX, newY);
-	}
-	
-	
+		
 	/** Updates the world if the TNT block is pushed
 	 * into a cracked wall, and also creates an explosion
 	 * effect for 0.4 secs.

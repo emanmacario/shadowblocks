@@ -27,7 +27,7 @@ public class Ice extends Pushable {
 	
 	
 	/** Pushes the ice block in a given direction, 
-	 * moving 32 pixels every 0.25 seconds until 
+	 * moving 32 pixels every 0.25 secondss until 
 	 * it is blocked.
 	 * 
 	 * @param direction

@@ -33,21 +33,25 @@ public class Player extends Movable {
 	}
 	
 	
-	/** Method that updates the state of the Player object 'on move'.
+	/** Moves player in a given direction, also
+	 * incrementing their move count.
 	 * 
 	 * @param direction
-	 * @param testX
-	 * @param testY
+	 * @return void
 	 */
 	@Override
-	public void onMove(float newX, float newY) {
+	public void moveToDestination(int direction) {
+		super.moveToDestination(direction);
 		this.moveCount++;
-		
-		super.onMove(newX, newY);
 	}
+
 	
 	
-	/** Undo the most recent move for a player. 
+	/** Undo the most recent move for a player,
+	 * also decremeting the player's move count. 
+	 * 
+	 * @param void
+	 * @return void
 	 */
 	@Override
 	public void undo() {

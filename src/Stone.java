@@ -24,12 +24,4 @@ public class Stone extends Pushable {
 		this.addTag("Block");
 		this.addTag("Blocked");
 	}
-	
-	
-	@Override
-	public void onMove(float newX, float newY) {
-				
-		//this.addToHistory();
-		super.onMove(newX, newY);
-	}
 }
