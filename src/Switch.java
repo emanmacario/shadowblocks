@@ -1,18 +1,40 @@
 
 
 public class Switch extends Sprite {
-		
+	
+	/** Switch attributes.
+	 */
 	private Door door;
 	
+	
+	/** Creates a new Switch object.
+	 * 
+	 * @param The x-coordinate of the sprite, in pixels.
+	 * @param The y-coordinate of the sprite, in pixels.
+	 */
 	public Switch(float x, float y) {
 		super("res/switch.png", x, y);
 		this.door = null;
 	}
 	
+	/** Associates a door with the switch.
+	 * 
+	 * @param door  The door to be set.
+	 * @return void
+	 */
 	public void setDoor(Door door) {
 		this.door = door;
 	}
 	
+	
+	/** Updates the state of the door (open/closed)
+	 * by checking if the position of the switch tile 
+	 * is occupied by a block.
+	 * 
+	 * @param world  The World object the Switch belongs to.
+     * @param delta  Time passed since last frame (milliseconds).
+     * @return void
+     */
 	@Override
 	public void update(World world, int delta) {
 		

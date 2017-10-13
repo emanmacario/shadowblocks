@@ -17,8 +17,7 @@ import java.util.ArrayList;
 
 public abstract class Sprite {	
 	
-	/** 
-	 * Sprite attributes. 
+	/** Sprite constants. 
 	 */
 	public static final int DIR_NONE = 0;
 	public static final int DIR_LEFT = 1;
@@ -26,22 +25,24 @@ public abstract class Sprite {
 	public static final int DIR_UP = 3;
 	public static final int DIR_DOWN = 4;
 	
+	
+	/** Sprite attributes.
+	 */
 	private Image image;
 	private float x;
 	private float y;
 	private ArrayList<String> tags;
 		
 	
-	/** 
-	 * Creates a Sprite object.
+	/** Creates a Sprite object.
 	 * 
-	 * @param imagePath  The relative path to the sprite's image.
-	 * @param x          The sprite's x-coordinate, in pixels.
-	 * @param y          The sprite's y-coordinate, in pixels.
+	 * @param imageSource The relative path to the sprite's image.
+	 * @param x           The sprite's x-coordinate, in pixels.
+	 * @param y           The sprite's y-coordinate, in pixels.
 	 */
-	public Sprite(String imagePath, float x, float y) {
+	public Sprite(String imageSource, float x, float y) {
 		try {
-			this.image = new Image(imagePath);
+			this.image = new Image(imageSource);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -51,15 +52,36 @@ public abstract class Sprite {
 	}
 	
 	
+	/** Associates a tag with this sprite.
+	 * 
+	 * @param tag
+	 * @return void
+	 */
 	public void addTag(String tag) {
 		this.tags.add(tag);
 	}
 	
+	/** Removes a tag from this sprite.
+	 * 
+	 * @param tag
+	 * @return void
+	 */
 	public void removeTag(String tag) {
 		this.tags.remove(tag);
 	}
 	
+	
+	/** Returns whether a sprite
+	 * possesses a given tag.
+	 * 
+	 * @param otherTag
+	 * @return True if sprite has tag else false.
+	 */
 	public boolean compareTag(String otherTag) {
+		
+		/* Test each individual tag
+		 * for equality.
+		 */
 		for (String tag : tags) {
 			if (tag.equals(otherTag)) {
 				return true;
@@ -69,28 +91,51 @@ public abstract class Sprite {
 	}
 	
 
-	/**
-	 * Getters and setters for sprite's pixel coordinates. 
+	/** Returns a sprite's x-coordinate, in pixels.
+	 * 
+	 * @param void
+	 * @return x 
 	 */
 	public float getX() {
 		return this.x;
 	}
 	
+	
+	/** Sets a sprite's x-coordinate, in pixels.
+	 * 
+	 * @param x  New x-coordinate.
+	 * @return void
+	 */
 	public void setX(float x) {
 		this.x = x;
 	}
 	
+	
+	/** Returns a sprite's y-coordinate, in pixels.
+	 * 
+	 * @param void
+	 * @return y 
+	 */
 	public float getY() {
 		return this.y;
 	}
-
+	
+	
+	/** Sets a sprite's y-coordinate, in pixels.
+	 * 
+	 * @param y  New y-coordinate.
+	 * @return void
+	 */
 	public void setY(float y) {
 		this.y = y;
 	}
 	
-	/** 
-	 * Update the game state for a frame.
+	
+	/** Update the game state for a frame. Default is an
+	 * empty method. Subclasses provide their own overridden
+	 * implementations.
 	 * 
+	 * @param world  The World object the sprite belongs to.
      * @param delta  Time passed since last frame (milliseconds).
      * @return void
      */
@@ -99,7 +144,8 @@ public abstract class Sprite {
 	}
 	
 	
-	/** 
+	/** Renders a sprite, centred on screen. 
+	 * 
 	 * @param g  The Slick graphics container object.
 	 * @throws SlickException
 	 * @return void
@@ -110,6 +156,9 @@ public abstract class Sprite {
 	
 	
 	/** Standard overridden equals method.
+	 * 
+	 * @param object  Another object to be tested for equality.
+	 * @return True if objects are the same else false.
 	 */
 	@Override
 	public boolean equals(Object other) {
