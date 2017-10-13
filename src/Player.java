@@ -59,6 +59,13 @@ public class Player extends Movable {
 	}
 	
 	
+	/** Controls player movement, and the updating of
+	 * the movement history of movable objects. 
+	 * 
+	 * @param world  The world object the player belongs to.
+	 * @param delta  Time passed since last frame (milliseconds).
+	 * @return void
+	 */
 	@Override
 	public void update(World world, int delta) {
 		
@@ -92,45 +99,68 @@ public class Player extends Movable {
 			return;
 		}
 		
-		/* Get new candidate position. */
+		/* Get new candidate position. 
+		 */
 		float testX = getTestX(this.getX(), this.direction);
 		float testY = getTestY(this.getY(), this.direction);
 		
+		/* Get the adjacent candidate position.
+		 */
 		float blockX = getTestX(testX, this.direction);
 		float blockY = getTestY(testY, this.direction);
 		
 		
+		/* If the next position is blocked...
+		 */
 		if (world.isBlocked(testX, testY)) {
 			
+			/* Check if there is a pushable block.
+			 */
 			Sprite block = world.getSpriteOfType("Block", testX, testY);
            
+			/* If there is no block...
+			 */
             if (block == null) {
             	
+            	/* The player is unable to move.
+            	 */
             	this.moveToDestination(DIR_NONE);
             	
             } else if (block instanceof TNT && world.isBlocked(blockX, blockY)) {
-                    
+                
+            	/* Check if the player is pushing a TNT block into
+                 * a cracked wall. 
+                 */
                 Sprite crackedWall = world.getSpriteOfType("Blocked", blockX, blockY);
                 
+                /* Explode the TNT block if so.
+                 */
                 if (crackedWall != null && crackedWall instanceof Cracked) {
-                    
                 	((TNT)block).setActivated(true);
-              
                 }
                     
             } else if (!world.isBlocked(blockX, blockY)) {
             	
+            	/* There exists a block which is free
+            	 * to be pushed by the player.
+                 */
             	this.moveToDestination(this.direction);
             	((Pushable)block).push(this.direction);
             	
             } else {
             	
+            	/* A block is blocked by another
+                 * block, so the player cannot move.
+                 */
             	this.moveToDestination(DIR_NONE);
             	
             }
             	
 		} else {
 			
+			/* Otherwise, just move to the next destination
+			 * if it is not blocked by anything!
+			 */
 			this.moveToDestination(this.direction);
 		}	
 		

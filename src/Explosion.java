@@ -23,6 +23,7 @@ public class Explosion extends Sprite {
 	/** Updates the explosion timer.
 	 * 
 	 * @param delta
+	 * @return void
 	 */
 	@Override
 	public void update(World world, int delta) {
