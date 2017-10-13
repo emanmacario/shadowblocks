@@ -27,8 +27,8 @@ public class Skeleton extends Movable {
 	public Skeleton(float x, float y) {
 		super("res/skull.png", x, y);
 		this.direction = DIR_UP;
-		this.timer = new Timer(1000);
-		this.addTag("Enemy");
+		this.timer = new Timer(Constant.SKELETON_INTERVAL);
+		this.addTag(Constant.ENEMY_TAG);
 	}
 		
 	

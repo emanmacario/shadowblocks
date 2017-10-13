@@ -25,7 +25,7 @@ public class Rogue extends Movable {
 	public Rogue(float x, float y) {
 		super("res/rogue.png", x, y);
 		this.direction = DIR_LEFT;
-		this.addTag("Enemy");
+		this.addTag(Constant.ENEMY_TAG);
 	}
 	
 	
@@ -54,7 +54,8 @@ public class Rogue extends Movable {
 		 */
 		if (world.isBlocked(testX, testY)) {
 						
-			Sprite block = world.getSpriteOfType("Block", testX, testY);
+			Sprite block = world.getSpriteOfType(Constant.BLOCK_TAG, 
+														testX, testY);
            
             if (block == null) {
             	

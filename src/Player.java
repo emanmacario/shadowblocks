@@ -29,7 +29,7 @@ public class Player extends Movable {
 		super("res/player.png", x, y);
 		this.direction = DIR_NONE;
 		this.moveCount = 0;
-		this.addTag("Player");
+		this.addTag(Constant.PLAYER_TAG);
 	}
 	
 	
@@ -120,7 +120,7 @@ public class Player extends Movable {
 			
 			/* Check if there is a pushable block.
 			 */
-			Sprite block = world.getSpriteOfType("Block", testX, testY);
+			Sprite block = world.getSpriteOfType(Constant.BLOCK_TAG, testX, testY);
            
 			/* If there is no block...
 			 */
@@ -135,7 +135,8 @@ public class Player extends Movable {
             	/* Check if the player is pushing a TNT block into
                  * a cracked wall. 
                  */
-                Sprite crackedWall = world.getSpriteOfType("Blocked", blockX, blockY);
+                Sprite crackedWall = world.getSpriteOfType(Constant.BLOCKED_TAG, 
+                													blockX, blockY);
                 
                 /* Explode the TNT block if so.
                  */
@@ -208,7 +209,7 @@ public class Player extends Movable {
 	 */
 	private boolean isPlayerDead(World world) {
 		
-		if (world.getSpriteOfType("Enemy", 
+		if (world.getSpriteOfType(Constant.ENEMY_TAG, 
 					this.getX(), this.getY()) != null) {
 			
 			return true;

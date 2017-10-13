@@ -17,6 +17,6 @@ public class Wall extends Sprite {
 	 */
 	public Wall(float x, float y) {
 		super("res/wall.png", x, y);
-		this.addTag("Blocked");
+		this.addTag(Constant.BLOCKED_TAG);
 	}
 }

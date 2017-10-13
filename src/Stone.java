@@ -18,7 +18,7 @@ public class Stone extends Pushable {
 	 */
 	public Stone(float x, float y) {
 		super("res/stone.png", x, y);
-		this.addTag("Block");
-		this.addTag("Blocked");
+		this.addTag(Constant.BLOCK_TAG);
+		this.addTag(Constant.BLOCKED_TAG);
 	}
 }

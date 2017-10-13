@@ -24,8 +24,8 @@ public class TNT extends Pushable {
 	public TNT(float x, float y) {
 		super("res/tnt.png", x, y);
 		this.activated = false;
-		this.addTag("Block");
-		this.addTag("Blocked");
+		this.addTag(Constant.BLOCK_TAG);
+		this.addTag(Constant.BLOCKED_TAG);
 	}
 	
 	
@@ -59,7 +59,7 @@ public class TNT extends Pushable {
             /* Destroy the cracked wall and TNT block, and
              * add the explosion sprite to the sprite list.
              */
-            Sprite crackedWall = world.getSpriteOfType("Cracked");
+            Sprite crackedWall = world.getSpriteOfType(Constant.CRACKED_TAG);
             world.createSprite(explosion);
             world.destroySprite(crackedWall);
             world.destroySprite(this);

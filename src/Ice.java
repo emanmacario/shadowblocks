@@ -32,13 +32,13 @@ public class Ice extends Pushable {
 		this.direction = DIR_NONE;
 		this.lastX = getX();
 		this.lastY = getY();
-		this.addTag("Block");
-		this.addTag("Blocked");
+		this.addTag(Constant.BLOCK_TAG);
+		this.addTag(Constant.BLOCKED_TAG);
 	}
 	
 	
 	/** Pushes the ice block in a given direction, 
-	 * moving 32 pixels every 0.25 secondss until 
+	 * moving 32 pixels every 0.25 seconds until 
 	 * it is blocked.
 	 * 
 	 * @param direction
@@ -50,7 +50,7 @@ public class Ice extends Pushable {
 		this.lastY = this.getY();
 		this.active = true;
 		this.direction = direction;
-		this.timer = new Timer(250);
+		this.timer = new Timer(Constant.ICE_INTERVAL);
 		this.moveToDestination(direction);
 	}
 	

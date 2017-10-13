@@ -50,8 +50,8 @@ public class Switch extends Sprite {
 		/* Check if there is a block
 		 * currently on the door switch.
 		 */
-		Sprite block = world.getSpriteOfType("Block", 
-								this.getX(), this.getY());
+		Sprite block = world.getSpriteOfType(Constant.BLOCK_TAG, 
+										this.getX(), this.getY());
 		
 		/* Open the door if so, otherwise
 		 * close the door if it is not already

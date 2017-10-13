@@ -33,11 +33,12 @@ public class World {
 	 * @return New world starting at level zero.
 	 */
 	public World() {
-		this.sprites = Loader.loadSprites("res/levels/0.lvl");
+		this.sprites = Loader.loadSprites(Constant.LEVEL_DIR 
+								+ Constant.START_LEVEL + Constant.LEVEL_EXT);
 		this.spritesToCreate = new ArrayList<>();
 		this.spritesToDestroy = new ArrayList<>();
 		this.playerMoved = false;
-		this.currentLevel = 0;
+		this.currentLevel = Constant.START_LEVEL;
 	}
 	
 	
@@ -47,8 +48,8 @@ public class World {
 	 * @return void
 	 */
 	public void restartLevel() {
-		this.sprites = Loader.loadSprites("res/levels/" 
-								+ currentLevel + ".lvl");
+		this.sprites = Loader.loadSprites(Constant.LEVEL_DIR
+								+ currentLevel + Constant.LEVEL_EXT);
 		this.spritesToCreate.clear();
 		this.spritesToDestroy.clear();
 	}
@@ -77,7 +78,7 @@ public class World {
 		/* Now check to actually see if the 
 		 * tile is blocked.
 		 */
-		if (getSpriteOfType("Blocked", x, y) != null) {
+		if (getSpriteOfType(Constant.BLOCKED_TAG, x, y) != null) {
 			return true;
 		}
 		return false;
@@ -229,8 +230,8 @@ public class World {
 	public void updateMovableHistory() {
 		
 		for (Sprite sprite : sprites) {
-			if (sprite.compareTag("Block") || 
-					sprite.compareTag("Player")) {
+			if (sprite.compareTag(Constant.BLOCK_TAG) || 
+					sprite.compareTag(Constant.PLAYER_TAG)) {
 				
 				((Movable)sprite).addToHistory();
 			}
@@ -314,7 +315,7 @@ public class World {
 	 */
 	private boolean isLevelOver() {
 		
-		if (currentLevel == 5) {
+		if (currentLevel == Constant.END_LEVEL) {
 			return false;
 		}
 		

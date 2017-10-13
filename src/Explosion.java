@@ -25,7 +25,7 @@ public class Explosion extends Sprite {
 	 */
 	public Explosion(float x, float y) {
 		super("res/explosion.png", x, y);
-		this.timer = new Timer(400);
+		this.timer = new Timer(Constant.EXPLOSION_TIME);
 	}
 	
 	

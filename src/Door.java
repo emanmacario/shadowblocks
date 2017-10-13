@@ -56,13 +56,13 @@ public class Door extends Sprite {
 		 * to indicate that Movable objects
 		 * cannot/can move through this location.
 		 */
-		if (!closed && compareTag("Blocked")) {
+		if (!closed && compareTag(Constant.BLOCKED_TAG)) {
 			
-			this.removeTag("Blocked");
+			this.removeTag(Constant.BLOCKED_TAG);
 			
-		} else if (closed && !compareTag("Blocked")){
+		} else if (closed && !compareTag(Constant.BLOCKED_TAG)){
 			
-			this.addTag("Blocked");
+			this.addTag(Constant.BLOCKED_TAG);
 		}
 	}
 	

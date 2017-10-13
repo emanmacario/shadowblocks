@@ -34,7 +34,7 @@ public class Mage extends Movable {
 	public Mage(float x, float y) {
 		super("res/mage.png", x, y);
 		this.direction = DIR_NONE;
-		this.addTag("Enemy");
+		this.addTag(Constant.ENEMY_TAG);
 	}
 	
 	
@@ -51,7 +51,7 @@ public class Mage extends Movable {
 		/* Run the algorithm if player has moved.
 		 */
 		if (world.getPlayerMoved()) {
-			Sprite player = world.getSpriteOfType("Player");
+			Sprite player = world.getSpriteOfType(Constant.PLAYER_TAG);
 			
 			this.update(player.getX(), player.getY());
 			

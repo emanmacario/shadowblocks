@@ -47,7 +47,7 @@ public class Target extends Sprite {
 	@Override
 	public void update(World world, int delta) {
 		
-		Sprite block = world.getSpriteOfType("Block", 
+		Sprite block = world.getSpriteOfType(Constant.BLOCK_TAG, 
 										this.getX(), this.getY());
 		
 		if (block != null) {
