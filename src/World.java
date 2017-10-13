@@ -31,11 +31,11 @@ public class World {
 	 * Creates the World object.
 	 */
 	public World() {
-		this.sprites = Loader.loadSprites("res/levels/0.lvl");
+		this.sprites = Loader.loadSprites("res/levels/2.lvl");
 		this.spritesToCreate = new ArrayList<>();
 		this.spritesToDestroy = new ArrayList<>();
 		this.playerMoved = false;
-		this.currentLevel = 0;
+		this.currentLevel = 2;
 	}
 	
 	
@@ -225,13 +225,11 @@ public class World {
 	 */
 	public void undoMovables() {
 		
-		int maxSize = getMaxSize();
+		//int maxSize = getMaxSize();
 		
 		for (Sprite sprite : sprites) {
 			if (sprite instanceof Movable) {
-				if (((Movable)sprite).getStackSize() == maxSize) {
-					((Movable)sprite).undo();
-				}
+				((Movable)sprite).undo();
 			}
 		}
 	}

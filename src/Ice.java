@@ -15,6 +15,8 @@ public class Ice extends Pushable {
 		this.lastY = getY();
 		this.addTag("Block");
 		this.addTag("Blocked");
+		System.out.println(lastX == getX());
+		System.out.println(lastY == getY());
 	}
 	
 	
@@ -37,9 +39,13 @@ public class Ice extends Pushable {
 	
 	@Override
 	public void addToHistory() {
+		
 		HistoryStack history = this.getHistory();
 		
+		System.out.println("lastX: " + lastX + ", lastY:" + lastY);
+		
 		history.push(lastX, lastY);
+		
 	}
 	
 	
@@ -49,10 +55,10 @@ public class Ice extends Pushable {
 		/* Update the timer, and slide
 		 * if active. 
 		 */
-		if (this.active) {
-			this.timer.update(delta);
+		if (active) {
+			timer.update(delta);
 			
-			if (this.timer.expired()) {
+			if (timer.expired()) {
 				
 				float testX = this.getTestX(this.getX(), this.direction);
 				float testY = this.getTestY(this.getY(), this.direction);
@@ -62,11 +68,11 @@ public class Ice extends Pushable {
 					this.timer.reset();
 				} else {
 					this.active = false;
-					this.lastX = this.getX();
-					this.lastY = this.getY();
 				}
-				
 			}
+		} else {
+			this.lastX = this.getX();
+			this.lastY = this.getY();
 		}
 	}
 }
